@@ -26,6 +26,14 @@
     <activity android:name="com.suntengmob.sdk.activity.InterstitialActivity"
         android:theme="@android:style/Theme.Translucent"
         android:configChanges="orientation|keyboardHidden|screenSize" />
+    
+     <activity android:name="com.suntengmob.sdk.activity.BrowserAdActivity"
+             android:configChanges="orientation|keyboardHidden|screenSize" />
+
+    <activity android:name="com.suntengmob.sdk.activity.SplashActivity"
+              android:screenOrientation="portrait"
+              android:configChanges="orientation|keyboardHidden|screenSize"/>
+    
     </application>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

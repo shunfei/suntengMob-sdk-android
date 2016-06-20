@@ -25,6 +25,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int showBanner=0x7f060001;
         public static final int showInter=0x7f060000;
     }
     public static final class layout {
