@@ -1,8 +1,8 @@
-# SuntengMob SDK V2.0.3
-### 1¡¢µ¼Èësdk
-    ½«sdk½âÑ¹ºóµÄlibsÄ¿Â¼ÏÂµÄjarÎÄ¼şµ¼Èëµ½¹¤³ÌÖ¸¶¨µÄlibsÄ¿Â¼
-### 2¡¢¸üĞÂAndroidManifest.xmlÎÄ¼ş
-    <!-- Çë½«ÏÂÃæÈ¨ÏŞÅäÖÃ´úÂë¸´ÖÆµ½AndroidManifest.xmlÎÄ¼şÖĞ£º-->
+# SuntengMob SDK V2.0.4
+### ä¸€ã€å¯¼å…¥sdk
+    å°†sdkè§£å‹åçš„libsç›®å½•ä¸‹çš„jaræ–‡ä»¶å¯¼å…¥åˆ°å·¥ç¨‹æŒ‡å®šçš„libsç›®å½•
+### äºŒã€é…ç½®AndroidManifest.xmlæ–‡ä»¶
+    <!-- è¯·å°†ä¸‹é¢æƒé™é…ç½®ä»£ç å¤åˆ¶åˆ°AndroidManifest.xmlæ–‡ä»¶ä¸­ï¼š-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     
-    <!-- ÒÔÏÂÊÇÉêÃ÷Activity£º-->
+    <!-- ä»¥ä¸‹æ˜¯ç”³æ˜Activityï¼š-->
     <activity android:name="com.suntengmob.sdk.activity.InterstitialActivity"
               android:theme="@android:style/Theme.Translucent"
               android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
@@ -21,135 +21,134 @@
               android:screenOrientation="portrait"
               android:resizeableActivity="false"
               android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"/>
-    <!-- ÒÔÉÏÊÇÉêÃ÷Activity£º-->
+    <!-- ä»¥ä¸Šæ˜¯ç”³æ˜Activityï¼š-->
 
-#### 3¡¢SDK³õÊ¼»¯ 
+#### ä¸‰ã€SDKåˆå§‹åŒ– 
 
-- **µ÷ÓÃ³õÊ¼»¯**£º
-            ÔÚÖ÷ActivityµÄonCreate()µ÷ÓÃÏÂÃæ¾²Ì¬·½·¨
-             AdService.init(Activity activity, String publisherId, String appKey , String appId);
+- **è°ƒç”¨åˆå§‹åŒ–**ï¼š
+        åœ¨ä¸»Activityçš„onCreate()è°ƒç”¨ä¸‹é¢é™æ€æ–¹æ³•ï¼š
+         AdService.init(Activity activity, String publisherId, String appKey , String appId);
              
-             
- >**×¢Òâ:**
- > ÆäÖĞpublisherIdÎª¿Í»§ID£¬appKeyºÍAppId¾ùĞè´Ósunteng»ñÈ¡
+ >**æ³¨æ„:**
+ > å…¶ä¸­publisherIdä¸ºå®¢æˆ·idï¼ŒappKeyå’ŒappIdå‡éœ€ä»suntengè·å–
 
-### 4¡¢²åÆÁ¹ã¸æÕ¹Ê¾
+### å››ã€æ’å±å¹¿å‘Šå±•ç¤º
     /**
-     * ÏÔÊ¾²åÆÁ¹ã¸æ
+     * æ˜¾ç¤ºæ’å±å¹¿å‘Šç¤ºä¾‹ä»£ç 
      */
     private void showInterstitalAd(){
-        Ad interstitialAd = new InterstitialAd(); //ÊµÀı»¯Ò»¸ö²åÆÁ¹ã¸æ
-        interstitialAd.setPlacementId(51);
-        interstitialAd.loadAd( new AdEventListener() {
+        Ad interstitialAd = new InterstitialAd(); //å®ä¾‹åŒ–ä¸€ä¸ªæ’å±å¹¿å‘Š
+        interstitialAd.setPlacementId(51);//51ä¸ºæµ‹è¯•å¹¿å‘Šä½id
+        interstitialAd.loadAd(new InterstitialAdLoadedListener() {
                     @Override
-                    public void onReceiveAd(Ad ad) {
-                    //¼ÓÔØÍê³É¹ã¸æ»á»Øµ÷onReceiveAd(),ÔÚ´ËÊ±±ã¿Éµ÷ÓÃshowAd()½øĞĞ¹ã¸æÕ¹Ê¾
-                        ad.showAd(new AdDisplayListener() {
+                    public void onReceiveAd(InterstitialAd interstitialAd) {
+                    //åŠ è½½å®Œæˆå¹¿å‘Šä¼šå›è°ƒonReceiveAd(),åœ¨æ­¤æ—¶ä¾¿å¯è°ƒç”¨showAd()è¿›è¡Œå¹¿å‘Šå±•ç¤º
+                        interstitialAd.showAd(new AdDisplayListener() {
                             @Override
                             public void onAdDisplayed(Ad ad) {
-                                //²åÆÁ¹ã¸æÕ¹ÏÖ
+                                //æ’å±å¹¿å‘Šå±•ç°æˆåŠŸ
                             }
                             @Override
                             public void onAdClicked(Ad ad) {
-                                //µ±ÓÃ»§µã»÷¹ã¸æ
+                                //ç”¨æˆ·ç‚¹å‡»å¹¿å‘Š
                             }
                             @Override
                             public void onAdClosed(Ad ad) {
-                               //µ±ÓÃ»§µã»÷¹Ø±Õ¹ã¸æ»òÔÚ¹ã¸æ½çÃæ°´ÏÂback¼ü
+                               //å½“æ’å±å¹¿å‘Šè¢«å…³é—­
                             }
                         });
                     }
                     
                     @Override
-                    public void onFailedToReceiveAd(Ad ad , int code) {
-                        //µ±¹ã¸æ¼ÓÔØÊ§°ÜÊ±»á»Øµ÷onFailedToReceiveAd();
-                        //ÆäÖĞ¹ã¸æ¾º¼ÛÊ§°Üºó·¢ÉúÔì³ÉµÄ·µÁ¿»òÕßÁô°×Ò²»á»Øµ÷onFailedToReceiveAd();
+                    public void onFailedToReceiveAd(int placementId , int code) {
+                        //å½“å¹¿å‘ŠåŠ è½½å¤±è´¥æ—¶ä¼šå›è°ƒè¿™ä¸ªæ–¹æ³•ï¼Œå¹¿å‘Šç«ä»·å¤±è´¥åè¿”å›è¿”é‡æˆ–è€…ç•™ç™½ä¹Ÿä¼šå›è°ƒè¿™ä¸ªæ–¹æ³•;
                         switch (code){
                             case AdService.CODE_BACK_AMOUNT:
-                                //²åÆÁ¹ã¸æ¾º¼ÛÊ§°Ü£¬½á¹ûÎª·µÁ¿£¨ÎŞ¹ã¸æ·µ»Ø£©
+                                //æ’å±å¹¿å‘Šç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºè¿”é‡ï¼ˆæ— å¹¿å‘Šè¿”å›ï¼‰
                                 break;
                             case AdService.CODE_BLANK_RESPONSE:
-                                //²åÆÁ¾º¼ÛÊ§°Ü£¬½á¹ûÎªÁô°×£¨ÎŞ¹ã¸æ·µ»Ø£©
+                                //æ’å±ç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºç•™ç™½ï¼ˆæ— å¹¿å‘Šè¿”å›ï¼‰
                                 break;
                             default:
-                                //ÆäËûÔ­Òòµ¼ÖÂ²åÆÁÕ¹Ê¾Ê§°Ü
+                                //å…¶ä»–åŸå› å¯¼è‡´æ’å±å±•ç¤ºå¤±è´¥
                                 break;
                         }
                     }
         });
     }
-  > **×¢Òâ: **
- > ±ØĞëÒªÉèÖÃ¹ã¸æÎ»id 
+ > **æ³¨æ„:**
+ > å¿…é¡»ç”¨*setPlacementId(int placemetnId)*æ–¹æ³•è®¾ç½®å¹¿å‘Šä½id;
+ AdDisplayListenerç›‘å¬ä¸­çš„*onFailedToReceiveAd(int placementId , int code)*ï¼ŒplacementIdæ—¶å¹¿å‘Šä½idï¼Œcodeæ˜¯é”™è¯¯ç ï¼Œå…·ä½“åŸå› è¯·æŸ¥é˜…ä¸‹æ–‡çš„å¤±è´¥é”™è¯¯ç ã€‚
 
-### 5¡¢¿ªÆÁ¹ã¸æÕ¹Ê¾
+### äº”ã€å¼€å±å¹¿å‘Šå±•ç¤º
 
     /**
-     * ÏÔÊ¾¿ªÆÁ¹ã¸æ
+     * æ˜¾ç¤ºå¼€å±å¹¿å‘Šç¤ºä¾‹ä»£ç 
      */
     private void showSplashAd(){
-        final int placementid = 49; //¹ã¸æÎ»id
-        SplashManager.getIns().loadAd(placementid, new AdEventListener() {
+        final int placementid = 49; //å¹¿å‘Šä½id
+        SplashManager.getIns().loadAd(placementid, new SplashAdLoadedListener() {
             @Override
-            public void onReceiveAd(Ad ad) {
-                ad.showAd(new AdDisplayListener() {
+            public void onReceiveAd(SplashAd splashAd) {
+                splashAd.showAd(new AdDisplayListener() {
                     @Override
                     public void onAdDisplayed(Ad ad) {
-                        //µ±¿ªÆÁ³É¹¦ÏÔÊ¾ºó»á»Øµ÷
+                        //å½“å¼€å±æˆåŠŸæ˜¾ç¤ºåä¼šå›è°ƒ
                     }
 
                     @Override
                     public void onAdClicked(Ad ad) {
-                        //µ±µã»÷¿ªÆÁ¹ã¸æ
+                        //å½“å¼€å±å¹¿å‘Šè¢«ç‚¹å‡»æ—¶å€™å›è°ƒ
                     }
 
                     @Override
                     public void onAdClosed(Ad ad) {
-                        //µ±¿ªÆÁ¹ã¸æ¹Ø±ÕÊ±»á»Øµ÷
+                        //å½“å¼€å±å¹¿å‘Šå…³é—­æ—¶ä¼šå›è°ƒ
                     }
                 });
             }
 
             @Override
-            public void onFailedToReceiveAd(Ad ad, int code) {
-                //µ±¿ªÆÁ¹ã¸æÏÔÊ¾Ê§°ÜÊ±»á»Øµ÷
+            public void onFailedToReceiveAd(int placementId, int code) {
+                //å½“å¼€å±å¹¿å‘Šæ˜¾ç¤ºå¤±è´¥æ—¶ä¼šå›è°ƒ
                 switch (code){
                     case AdService.CODE_BACK_AMOUNT:
-                        //¿ªÆÁ¾º¼ÛÊ§°Ü£¬½á¹ûÎª·µÁ¿
+                        //å¼€å±ç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºè¿”é‡
                         break;
                     case AdService.CODE_BLANK_RESPONSE:
-                        //¿ªÆÁ¾º¼ÛÊ§°Ü£¬½á¹ûÎªÁô°×
+                        //å¼€å±ç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºç•™ç™½
                         break;
                     default:
-                       //ÆäËûÔ­Òòµ¼ÖÂ¿ªÆÁÕ¹Ê¾Ê§°Ü
+                       //å…¶ä»–åŸå› å¯¼è‡´å¼€å±å±•ç¤ºå¤±è´¥
                         break;
                 }
             }
         });
     }
-  > **×¢Òâ: **
- > ±ØĞëÒªÉèÖÃ¹ã¸æÎ»id
+ > *SplashManager.getIns().loadAd(placementId, listener)*æ–¹æ³•ä¸­ç¬¬ä¸€ä¸ªå‚æ•°ä¸ºå¹¿å‘Šä½idï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯ç”¨æ¥ç›‘å¬å¹¿å‘Šç«ä»·æ˜¯å¦æˆåŠŸçš„å›è°ƒã€‚
  
-### 6¡¢Õ¹Ê¾Banner¹ã¸æ
+### å…­ã€å±•ç¤ºæ¨ªå¹…å¹¿å‘Š(Banner)
 
-       /**
-     * Ìí¼ÓÒ»¸öbanner¹ã¸æ
+    /**
+     * æ·»åŠ ä¸€ä¸ªbannerå¹¿å‘Šçš„çš„ç¤ºä¾‹ä»£ç 
      */
     private void showBanner(){
+        //è®¾ç½®banneråœ¨çˆ¶å®¹å™¨ä¸­çš„ä½ç½®
         FrameLayout.LayoutParams layoutParams =
                 new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
 
-       final int placementId = 50; //¹ã¸æÎ»ÖÃid
-        BannerAdView bannerAdView = new BannerAdView(this, placementId ,bannerWidth, bannerHeight); //Ä¬ÈÏ×ÔÊÊÓ¦ÆÁÄ»
+       final int placementId = 50; //å¹¿å‘Šä½ç½®id
+        BannerAdView bannerAdView = new BannerAdView(this, placementId ,bannerWidth, bannerHeight); 
         bannerAdView.setAdListener(new BannerAdListener() {
             @Override
             public void onSwitched(BannerAdView adView) {
-                //bannerË¢ĞÂÇĞ»»³É¹¦
+                //banneråˆ·æ–°åˆ‡æ¢æˆåŠŸ
             }
 
             @Override
             public void onShowSuccess(BannerAdView adView) {
-                //bannerÏÔÊ¾³É¹¦
+                //bannerå±•ç¤ºæˆåŠŸ
             }
 
             @Override
@@ -157,42 +156,155 @@
                 Util.printInfo("Show Banner onShowFailed,error code:"+code);
                 switch (code){
                     case AdService.CODE_BACK_AMOUNT:
-                        //¾º¼ÛÇëÇóÊ§°Ü£¬banner·µÁ¿
+                        //ç«ä»·è¯·æ±‚å¤±è´¥ï¼Œbannerè¿”é‡
                         break;
                     case AdService.CODE_BLANK_RESPONSE:
-                        //¾º¼ÛÇëÇóÊ§°Ü£¬bannerÁô°×
+                        //ç«ä»·è¯·æ±‚å¤±è´¥ï¼Œbannerç•™ç™½
                         break;
                     default:
-                        //ÆäËûÔ­Òòµ¼ÖÂbannerÕ¹Ê¾Ê§°Ü
+                        //å…¶ä»–åŸå› å¯¼è‡´bannerå±•ç¤ºå¤±è´¥
                         break;
                 }
             }
         });
-        //½«banner¹ã¸æÌí¼Óµ½ÈİÆ÷
+        //å°†bannerå¹¿å‘Šæ·»åŠ åˆ°çˆ¶å®¹å™¨
         addContentView(bannerAdView, layoutParams);
     }
-  > **×¢Òâ: **
- > ±ØĞëÒªÉèÖÃ¹ã¸æÎ»id¡£  
+  > **æ³¨æ„:**
+ > BannerAdViewæ„é€ æ–¹æ³•ä¸­çš„4ä¸ªå‚æ•°åˆ†åˆ«ä¸ºï¼šä¸Šä¸‹æ–‡å‚æ•°contextï¼Œå¹¿å‘Šä½Idï¼Œå¹¿å‘Šçš„å®½åº¦ï¼Œå¹¿å‘Šçš„é«˜åº¦ï¼Œå®½åº¦å’Œé«˜åº¦è®¡é‡å•ä½ä¸ºpxã€‚
  
-###7¡¢¹ã¸æÕ¹Ê¾Ê§°ÜÊ±µÄÒ»Ğ©´íÎóÂë
-    AdService.CODE_UNKNOWN_ERROR = -1;//Òì²½ÇëÇó¹ı³ÌÖĞ·¢Éú´íÎó
-    AdService.CODE_HTTP_ERROR = 1; //´¦ÀíhttpÇëÇóµÄ¹ı³ÌÖĞ·¢Éú´íÎó
-    AdService.CODE_BAD_NETWORK = 0;//ÎŞÍøÂç»òÎŞÍøÂçÈ¨ÏŞ
-    AdService.CODE_BLANK_RESPONSE = 201 // ¾º¼ÛÇëÇóÊ§°Ü,·µ»ØÁô°×
-    AdService.CODE_BACK_AMOUNT = 202; //¾º¼ÛÇëÇóÊ§°Ü,·µ»Ø·µÁ¿
+###ä¸ƒã€åŸç”Ÿå¹¿å‘Š(NativeAd)
 
-###8¡¢ÊÊÅäAndroid7.0£¨Èç¹û²»ĞèÒªÖ§³Ö¿ÉÖ±½ÓÌø¹ı±¾¶Î£©
-> Èç¹ûAppĞèÒªÖ§³ÖAndroid7.0ÒÔÉÏµÄÉè±¸£¬sdkÌá¹©ÁËAndroid7.0¶à´°¿ÚÄ£Ê½ºÍÎÄ¼ş¹²ÏíµÈÏà¹ØÌØĞÔµÄÖ§³Ö¡£  
+**1ã€åŠ è½½å•ä¸ªåŸç”Ÿå¹¿å‘Š**
+    
+    /**
+     *ç¤ºä¾‹ä»£ç ï¼š
+     * å®ä¾‹åŒ–ä¸€ä¸ªNativeAdï¼Œå¹¶è°ƒç”¨loadAd()æ–¹æ³•å‘èµ·å¹¿å‘Šè¯·æ±‚
+     */
+    NativeAd ad = new NativeAd();
+    //ad.disableImageResourcePreload();
+    ad.setPlacementId(place);
+    ad.loadAd(new NativeAdLoadedListener() {
+        @Override
+        public void onReceiveAd(NativeAd ad) {
+            //å¹¿å‘Šç«ä»·æˆåŠŸ
+            showNativeAdView(ad);
+        }
 
-**1¡¢Activity·ÖÆÁÊÊÅä**
-ManifestÖĞ×¢²áSplashActivityÊ±ºò£¬ĞèÒª¼ÓÉÏ*android:resizeableActivity="false"*
+        @Override
+        public void onFailedToReceiveAd(int placementId, int code) {
+            //å¹¿å‘Šç«ä»·å¤±è´¥
+            switch (code){
+            case AdService.CODE_BACK_AMOUNT:
+                //å¼€å±ç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºè¿”é‡
+                break;
+            case AdService.CODE_BLANK_RESPONSE:
+                //å¼€å±ç«ä»·å¤±è´¥ï¼Œç»“æœä¸ºç•™ç™½
+                break;
+            default:
+               //å…¶ä»–åŸå› å¯¼è‡´å¼€å±å±•ç¤ºå¤±è´¥
+                break;
+            }
+        }
+    });
+    
+    /**
+     * å±•ç¤ºNativeAd
+     */
+    private void showNativeAdView(NativeAd ad) {
+        NativeAdView nativeAdView = (NativeAdView) LayoutInflater.from(DemoActivity.this).inflate(R.layout.ad_native_layout, null);
+        TextView titleView = (TextView)nativeAdView.findViewById(R.id.ad_view_title);
+        TextView descriptionView = (TextView)nativeAdView.findViewById(R.id.ad_view_body);
+        Button actionButton = (Button)nativeAdView.findViewById(R.id.ad_view_action_button);
+        ImageView iconView = (ImageView)nativeAdView.findViewById(R.id.ad_view_header_image);
+        ImageView mediaView = (ImageView)nativeAdView.findViewById(R.id.ad_view_image);
+        ImageView logoView = (ImageView)nativeAdView.findViewById(R.id.item_logo_img);
 
-**2¡¢7.0ÎÄ¼ş¹²Ïí**
-**2.1 ÔÚ7.0ÖĞÏÂÔØ°²×°apkÎÄ¼ş¹²Ïí±ØĞëÊ¹ÓÃFileProvider£¬ËùÒÔĞèÒªÔÚAndroidManifest.xmlÅäÖÃÈçÏÂ´úÂë£º**
+        titleView.setText(ad.getTitle());
+        descriptionView.setText(ad.getDescription());
+        actionButton.setText(ad.getButtonContent());
 
-	<!-- ÅäÖÃproviderÓÃÓÚÊÊÅä7.0, authoritiesµÄ{{com.sunteng.suntengmob_sample}}²¿·ÖÌæ»»³Éµ±Ç°Ó¦ÓÃ°üÃû£¬
+        List<NativeAd.Image> images = ad.getImages();
+        mediaView.setImageDrawable(images.get(0).getDrawable());
+
+        NativeAd.Image icon_image = ad.getIconImage();
+        iconView.setImageDrawable(icon_image.getDrawable());
+        
+        NativeAd.Image logo_image = ad.getLogoImage();
+        logoView.setImageDrawable(logo_image.getDrawable());
+
+        ad.registerView(nativeAdView);
+        parent_layout.addView(nativeAdView);
+    }
+    
+>a) *ad.disableImageResourcePreload()ï¼›*ä½œç”¨ä¸ºå…³é—­å›¾ç‰‡é¢„åŠ è½½ï¼ŒSDKä¼šé»˜è®¤åŠ è½½å¹¿å‘Šä¸­çš„ç”¨åˆ°çš„èµ„æºå›¾ç‰‡ï¼Œè‹¥å¼€å‘è€…è°ƒç”¨äº†è¿™ä¸ªæ–¹æ³•ï¼Œå†è°ƒç”¨NativeAd.Imageæˆ–è€…å…¶å­ç±»ä¸­çš„getDrawabl()æ–¹æ³•æ—¶ï¼Œå°†ä¼šè·å¾—ä¸€ä¸ªç©ºå€¼,æ­¤æ—¶å¼€å‘è€…è‹¥è¦å±•ç¤ºNativeAdçš„å›¾ç‰‡ï¼Œéœ€è¦è°ƒç”¨getUrl()æ–¹æ³•è·å–å›¾ç‰‡çš„URLï¼Œç„¶åè‡ªè¡Œå¤„ç†ï¼›
+
+>b) *R.layout.ad_native_layout*æ˜¯ä¸€ä¸ªè¢«*com.suntengmob.sdk.core.NativeAdView*åŒ…è£¹çš„è‡ªå®šä¹‰å¸ƒå±€ï¼Œå¼€å‘è€…éœ€è¦æ ¹æ®è‡ªå·±çš„å±•ç¤ºéœ€è¦è‡ªå®šä¹‰å¸ƒå±€ä¸­çš„å†…å®¹ï¼Œå¹¶ä¸”NativeAdViewæ˜¯FrameLayoutçš„å­ç±»;
+
+>c) NativeAdViewçš„æ•°æ®å¡«å……å®Œæ¯•ä¹‹åï¼Œéœ€è¦è°ƒç”¨*ad.registerView(nativeAdView);*æ–¹æ³•,å¦åˆ™SDKæ— æ³•ç»Ÿè®¡åˆ°ç”¨æˆ·çš„è¡Œä¸ºã€‚
+
+**2ã€åŠ è½½å¤šä¸ªåŸç”Ÿå¹¿å‘Š**
+    
+     /**
+     * ç¤ºä¾‹ä»£ç 
+     * é¢„åŠ è½½å¤šä¸ªNativeAdå¤‡ç”¨
+     */
+    NativeAdsManager mNativeAdsManager = new NativeAdsManager(102, 20);
+    mNativeAdsManager.loadAds(new NativeAdsManager.LoadAdsListener() {
+        @Override
+        public void onLoadedAds(int placementId , int failedCount) {
+            Util.printErrorInfo("onFailedAds count = " + failedCount);
+            showContents();
+        }
+    });
+
+
+    /**
+     *(åœ¨adapterä¸­)è·å–ç¼“å­˜çš„NativeAd,å¹¶å±•ç¤º
+     */
+    NativeAd ad = mNativeAdsManager.nextCacheAd();
+    if (nativeAd == null){
+        return;
+    }
+    adViewHolder.mAdActionButton.setText(nativeAd.getButtonContent());
+    adViewHolder.mAdBodyTextView.setText(nativeAd.getDescription());
+    adViewHolder.mAdImageView.setImageDrawable(nativeAd.getImages().get(0).getDrawable());
+    adViewHolder.mHeaderImageView.setImageDrawable(nativeAd.getIconImage().getDrawable());
+    adViewHolder.mAdTileTextView.setText(nativeAd.getTitle());
+    adViewHolder.mLogoImageView.setImageDrawable(nativeAd.getLogoImage().getDrawable());
+    adViewHolder.mAdView.setTag(position);
+    nativeAd.registerView((NativeAdView)adViewHolder.itemView);
+    
+>a) *NativeAdsManager*çš„æ„é€ æ–¹æ³•éœ€è¦ä¸¤ä¸ªå‚æ•°ï¼Œç¬¬ä¸€ä¸ªæ˜¯å¹¿å‘Šä½ID,ç¬¬äºŒä¸ªæ˜¯æœ¬æ¬¡è¯·æ±‚çš„åŸç”Ÿå¹¿å‘Šçš„æ•°é‡ï¼Œç¼“å­˜æ•°é‡ä¸º1-20ä¸ªä¹‹é—´ï¼Œå¦‚æœä¼ å…¥çš„å€¼å¤§äº20ï¼Œä¼šåªç¼“å­˜20ä¸ªï¼›
+
+>b) *NativeAdsManager.LoadAdsListener*æ˜¯æ‰€æœ‰å¹¿å‘Šç«ä»·å…¨éƒ¨å®Œæˆä¹‹åçš„å›è°ƒï¼Œ*onLoadedAds()*çš„ä¸¤ä¸ªå‚æ•°åˆ†åˆ«ä¸ºï¼šå¹¿å‘Šä½IDï¼Œæœ¬æ¬¡ç«ä»·å¤±è´¥å¹¿å‘Šæ•°é‡ï¼›
+
+>c) *nextCacheAd()*æ–¹æ³•ä¼šå¾ªç¯è·å–é˜Ÿåˆ—ä¸­ç¼“å­˜çš„å¹¿å‘Šï¼›
+
+>d) *NativeAdsManager*ä¸­ä¹Ÿæä¾›*disableImageResourcePreload()*æ–¹æ³•è®¾ç½®ä¸é¢„åŠ è½½å›¾ç‰‡èµ„æºã€‚
+
+ 
+ 
+###å…«ã€å¹¿å‘Šå±•ç¤ºå¤±è´¥æ—¶çš„ä¸€äº›é”™è¯¯ç 
+    AdService.CODE_UNKNOWN_ERROR = -1;//å¼‚æ­¥è¯·æ±‚è¿‡ç¨‹ä¸­å‘ç”Ÿé”™è¯¯
+    AdService.CODE_HTTP_ERROR = 1; //å¤„ç†httpè¯·æ±‚çš„è¿‡ç¨‹ä¸­å‘ç”Ÿé”™è¯¯
+    AdServices.CODE_PRELOAD_FIALED = 2; //å¹¿å‘Šèµ„æºåŠ è½½å¤±è´¥
+    AdService.CODE_BAD_NETWORK = 0;//æ— ç½‘ç»œæˆ–æ— ç½‘ç»œæƒé™
+    AdService.CODE_BLANK_RESPONSE = 201 // ç«ä»·è¯·æ±‚å¤±è´¥,è¿”å›ç•™ç™½
+    AdService.CODE_BACK_AMOUNT = 202; //ç«ä»·è¯·æ±‚å¤±è´¥,è¿”å›è¿”é‡
+
+###ä¹ã€é€‚é…Android7.0ï¼ˆå¦‚æœä¸éœ€è¦æ”¯æŒå¯ç›´æ¥è·³è¿‡æœ¬æ®µï¼‰
+> å¦‚æœAppéœ€è¦æ”¯æŒAndroid7.0ä»¥ä¸Šçš„è®¾å¤‡ï¼Œsdkæä¾›äº†Android7.0å¤šçª—å£æ¨¡å¼å’Œæ–‡ä»¶å…±äº«ç­‰ç›¸å…³ç‰¹æ€§çš„æ”¯æŒã€‚  
+
+**1ã€Activityåˆ†å±é€‚é…**
+Manifestä¸­æ³¨å†ŒSplashActivityæ—¶å€™ï¼Œéœ€è¦åŠ ä¸Š*android:resizeableActivity="false"*
+
+**2ã€æ–‡ä»¶å…±äº«**
+**a) åœ¨7.0ä¸­ä¸‹è½½å®‰è£…apkæ–‡ä»¶å…±äº«å¿…é¡»ä½¿ç”¨FileProviderï¼Œæ‰€ä»¥éœ€è¦åœ¨AndroidManifest.xmlé…ç½®å¦‚ä¸‹ä»£ç ï¼š**
+
+	<!-- é…ç½®providerç”¨äºé€‚é…7.0, authoritiesçš„{{com.sunteng.suntengmob_sample}}éƒ¨åˆ†æ›¿æ¢æˆå½“å‰åº”ç”¨åŒ…åï¼Œ
          authorities = "{{BuildConfig.APPLICATION_ID}}.download.download.MobSdk.fileProvider" ,
-          provider_pathsÎª´´½¨ÔÚxmlÎÄ¼ş¼ĞÄÚµÄ×ÊÔ´ÎÄ¼ş -->
+          provider_pathsä¸ºåˆ›å»ºåœ¨xmlæ–‡ä»¶å¤¹å†…çš„èµ„æºæ–‡ä»¶ -->
 	<provider
         android:name="android.support.v4.content.FileProvider"
         android:authorities="com.sunteng.suntengmob_sample.download.MobSdk.fileProvider"
@@ -203,21 +315,21 @@ ManifestÖĞ×¢²áSplashActivityÊ±ºò£¬ĞèÒª¼ÓÉÏ*android:resizeableActivity="false"*
             android:resource="@xml/provider_paths"/>
         </provider>
 
-**2.2.¿ÉÒÔ¿´µ½ÔÚmeta-dataÖĞ£¬¶¨ÒåÁËÒ»¸ö×ÊÔ´Â·¾¶£¬µÚ¶ş²½¾ÍÊÇ´´½¨res/xml/provider_paths.xmlÎÄ¼ş£º**
-> **×¢Òâ£ºÖ»Ğè°ÑpathÖĞ{{com.suntengmob.sdk}}²¿·ÖÌæ»»³ÉÄãµ±Ç°ÏîÄ¿µÄ°üÃû£¬¸´ÖÆµ½ÎÄ¼şÖĞ¼´¿É¡£**
+**b) å¯ä»¥çœ‹åˆ°åœ¨meta-dataä¸­ï¼Œå®šä¹‰äº†ä¸€ä¸ªèµ„æºè·¯å¾„ï¼Œç¬¬äºŒæ­¥å°±æ˜¯åˆ›å»ºres/xml/provider_paths.xmlæ–‡ä»¶ï¼š**
+> **æ³¨æ„ï¼šåªéœ€æŠŠpathä¸­{{com.suntengmob.sdk}}éƒ¨åˆ†æ›¿æ¢æˆä½ å½“å‰é¡¹ç›®çš„åŒ…åï¼Œå¤åˆ¶åˆ°æ–‡ä»¶ä¸­å³å¯ã€‚**
 
 	<?xml version="1.0" encoding="utf-8"?>
 	<paths xmlns:android="http://schemas.android.com/apk/res/android">
 	     <!--/storage/emulated/0/Android/com.suntengmob.sdk/files/SSP/-->
-   		 <!--°ÑpathÖĞ{{com.sunteng.suntengmob_sample}}²¿·ÖÌæ»»³ÉÏîÄ¿µÄ°üÃû!-->
+   		 <!--æŠŠpathä¸­{{com.sunteng.suntengmob_sample}}éƒ¨åˆ†æ›¿æ¢æˆé¡¹ç›®çš„åŒ…å!-->
   	  	 <external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.suntengmob_sample/files/SSP/"/>
 	</paths>
 	
-###8¡¢ÆäËû
-**debugÄ£Ê½**
+###åã€å…¶ä»–
+**debugæ¨¡å¼**
     AdService.setIsDebugModel(boolean debug);
->´«Èë²ÎÊıÎªtrueÊ±£¬ÎªdebugÄ£Ê½£¬ÓĞÈÕÖ¾Êä³ö£¬Ä¬ÈÏÖµÎªtrue¡£·¢²¼ÕıÊ½°æ±¾Ê±ºòÇë¹Ø±ÕdebugÄ£Ê½¡£
+>ä¼ å…¥å‚æ•°ä¸ºtrueæ—¶ï¼Œä¸ºdebugæ¨¡å¼ï¼Œæœ‰æ—¥å¿—è¾“å‡ºï¼Œé»˜è®¤å€¼ä¸ºtrueã€‚å‘å¸ƒæ­£å¼ç‰ˆæœ¬æ—¶å€™è¯·å…³é—­debugæ¨¡å¼ã€‚
 
-**Î»ÖÃĞÅÏ¢»ñÈ¡¿ª¹Ø**  
+**ä½ç½®ä¿¡æ¯è·å–å¼€å…³**  
     AdService.setLocationEnable(boolean enable);
->´«Èë²ÎÊıÎªtrueÊ±£¬»ñÈ¡ÓÃ»§µ±Ç°µØÀíÎ»ÖÃ£¬Ä¬ÈÏÖµÎªtrue¡£½¨Òé¿ªÆô¡£
+>ä¼ å…¥å‚æ•°ä¸ºtrueæ—¶ï¼Œè·å–ç”¨æˆ·å½“å‰åœ°ç†ä½ç½®ï¼Œé»˜è®¤å€¼ä¸ºtrueã€‚

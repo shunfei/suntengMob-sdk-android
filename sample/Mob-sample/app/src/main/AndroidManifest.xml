@@ -35,6 +35,8 @@
             android:resizeableActivity="false"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
 
+        <activity android:name=".RecyclerViewActivity"/>
+
         <!-- 配置provider用于适配7.0, authorities的{{com.sunteng.suntengmob_sample}}部分替换成当前应用包名，
          authorities = "{{BuildConfig.APPLICATION_ID}}.download.download.MobSdk.fileProvider" ,
           provider_paths为创建在xml文件夹内的资源文件 -->

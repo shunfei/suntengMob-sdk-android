@@ -6,8 +6,13 @@
 
 ## Change Log
 
-11/09/2016 - v2.0.3
-* Update API.
-* New support Security verification
-* New support Android 7.0.
-* bugs fixes.
+12/07/2016 - v2.0.4  
+* New support Native Ad.  
+* New support Https.   
+* some bugs fixes.  
+
+11/09/2016 - v2.0.3  
+* Update API.  
+* New support Security verification  
+* New support Android 7.0.  
+* bugs fixes.  
