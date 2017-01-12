@@ -1,4 +1,4 @@
-# SuntengMob SDK V2.0.4
+# SuntengMob SDK V2.0.5
 ### 一、导入sdk
     将sdk解压后的libs目录下的jar文件导入到工程指定的libs目录
 ### 二、配置AndroidManifest.xml文件
@@ -27,101 +27,151 @@
 
 - **调用初始化**：
         在主Activity的onCreate()调用下面静态方法：
-         AdService.init(Activity activity, String publisherId, String appKey , String appId);
-             
+        
+         AdService.init(Activity activity, String appSecret);
+         
  >**注意:**
- > 其中publisherId为客户id，appKey和appId均需从sunteng获取
+ > appKey需从sunteng获取
 
 ### 四、插屏广告展示
     /**
-     * 显示插屏广告示例代码
+     * 请求插屏广告示例代码
+     * adUnitID 从官网获取
      */
-    private void showInterstitalAd(){
-        Ad interstitialAd = new InterstitialAd(); //实例化一个插屏广告
-        interstitialAd.setPlacementId(51);//51为测试广告位id
-        interstitialAd.loadAd(new InterstitialAdLoadedListener() {
-                    @Override
-                    public void onReceiveAd(InterstitialAd interstitialAd) {
-                    //加载完成广告会回调onReceiveAd(),在此时便可调用showAd()进行广告展示
-                        interstitialAd.showAd(new AdDisplayListener() {
-                            @Override
-                            public void onAdDisplayed(Ad ad) {
-                                //插屏广告展现成功
-                            }
-                            @Override
-                            public void onAdClicked(Ad ad) {
-                                //用户点击广告
-                            }
-                            @Override
-                            public void onAdClosed(Ad ad) {
-                               //当插屏广告被关闭
-                            }
-                        });
-                    }
-                    
-                    @Override
-                    public void onFailedToReceiveAd(int placementId , int code) {
-                        //当广告加载失败时会回调这个方法，广告竞价失败后返回返量或者留白也会回调这个方法;
-                        switch (code){
-                            case AdService.CODE_BACK_AMOUNT:
-                                //插屏广告竞价失败，结果为返量（无广告返回）
-                                break;
-                            case AdService.CODE_BLANK_RESPONSE:
-                                //插屏竞价失败，结果为留白（无广告返回）
-                                break;
-                            default:
-                                //其他原因导致插屏展示失败
-                                break;
-                        }
-                    }
+     InterstitialAd mInterstitialAd = null;
+     
+     void requestInterstitalAd() {
+	        final String adUnitId = "2-38-39";//广告位id
+	        mInterstitialAd = new InterstitialAd(adUnitId); //实例化一个插屏广告
+	        mInterstitialAd.loadAd(new InterstitialAdLoadedListener() {
+			        @Override
+			        public void onReceiveAd(InterstitialAd interstitialAd) {
+			            mInterstitialAd = interstitialAd;
+			            Toast.makeText(getApplicationContext(), "插屏广告请求成功",Toast.LENGTH_SHORT).show();
+			        }
+			
+			        @Override
+			        public void onFailedToReceiveAd(String adUnitId , int code) {
+			            //当广告加载失败时会回调onFailedToReceiveAd();
+			            mInterstitialAd = null;
+			            switch (code){
+			                case AdService.CODE_BACK_AMOUNT:
+			                    Toast.makeText(getApplicationContext(), "插屏返量",Toast.LENGTH_SHORT).show();
+			                    break;
+			                case AdService.CODE_BLANK_RESPONSE:
+			                    Toast.makeText(getApplicationContext(), "插屏留白",Toast.LENGTH_SHORT).show();
+			                    break;
+			                default:
+			                    Toast.makeText(getApplicationContext(), "插屏展示失败",Toast.LENGTH_SHORT).show();
+			                    break;
+			            }
+        	});
+       }
+    
+       
+    /**
+     * 展示插屏广告示例代码
+     ** /
+     
+     void showInterstitalAd(InterstitialAd interstitialAd){
+
+        if (interstitialAd == null || !interstitialAd.isLoaded()){
+            Toast.makeText(getApplicationContext(),"插屏请求未完成",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //加载完成广告会回调onReceiveAd(),在此时便可调用showAd()进行广告展示
+        interstitialAd.showAd(new AdDisplayListener() {
+            @Override
+            public void onAdDisplayed(Ad ad) {
+                //当插屏广告展现
+                Toast.makeText(getApplicationContext(),"插屏展示",Toast.LENGTH_SHORT).show();
+                mInterstitialAd = null;
+            }
+            @Override
+            public void onAdClicked(Ad ad) {
+                Toast.makeText(getApplicationContext(),"插屏点击",Toast.LENGTH_SHORT).show();
+                //当用户点击广告
+            }
+            @Override
+            public void onAdClosed(Ad ad) {
+                //当用户点击关闭广告或在广告界面按下back键
+                Toast.makeText(getApplicationContext(),"插屏关闭",Toast.LENGTH_SHORT).show();
+            }
         });
     }
+    
  > **注意:**
- > 必须用*setPlacementId(int placemetnId)*方法设置广告位id;
- AdDisplayListener监听中的*onFailedToReceiveAd(int placementId , int code)*，placementId时广告位id，code是错误码，具体原因请查阅下文的失败错误码。
+ AdDisplayListener监听中的*onFailedToReceiveAd(String adUnitId , int code)*，adUnitId时广告位id，code是错误码，具体原因请查阅下文的失败错误码。
 
 ### 五、开屏广告展示
 
     /**
-     * 显示开屏广告示例代码
+     * 请求加载开屏广告示例代码
      */
-    private void showSplashAd(){
-        final int placementid = 49; //广告位id
-        SplashManager.getIns().loadAd(placementid, new SplashAdLoadedListener() {
+    SplashAd mSplashAd = null;
+    
+    void requestSplashAd() {
+        final String adUnitId = "2-38-37"; //广告位id
+        SplashManager.getIns().loadAd(adUnitId, new SplashAdLoadedListener() {
+
             @Override
             public void onReceiveAd(SplashAd splashAd) {
-                splashAd.showAd(new AdDisplayListener() {
-                    @Override
-                    public void onAdDisplayed(Ad ad) {
-                        //当开屏成功显示后会回调
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-                        //当开屏广告被点击时候回调
-                    }
-
-                    @Override
-                    public void onAdClosed(Ad ad) {
-                        //当开屏广告关闭时会回调
-                    }
-                });
+                mSplashAd = splashAd;
+                Toast.makeText(getApplicationContext(), "开屏广告请求成功",Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailedToReceiveAd(int placementId, int code) {
+            public void onFailedToReceiveAd(String adUnitId, int code) {
                 //当开屏广告显示失败时会回调
+                mSplashAd = null;
                 switch (code){
                     case AdService.CODE_BACK_AMOUNT:
-                        //开屏竞价失败，结果为返量
+                        Toast.makeText(getApplicationContext(), "开屏返量",Toast.LENGTH_SHORT).show();
                         break;
                     case AdService.CODE_BLANK_RESPONSE:
-                        //开屏竞价失败，结果为留白
+                        Toast.makeText(getApplicationContext(), "开屏留白",Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                       //其他原因导致开屏展示失败
+                        Toast.makeText(getApplicationContext(), "开屏展示失败",Toast.LENGTH_SHORT).show();
                         break;
                 }
+            }
+
+        });
+    }
+    
+ > *SplashManager.getIns().loadAd(adUnitId, listener)*方法中第一个参数为广告位id，第二个参数是用来监听广告竞价是否成功的回调。
+    /**
+     * 显示开屏广告示例代码
+     */
+   
+    private void showSplashAd(SplashAd splashAd){
+        final int placementId = 37; //广告位id
+
+        if(splashAd == null){
+            Toast.makeText(getApplicationContext(), "开屏请求未成功",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        splashAd.showAd(new AdDisplayListener() {
+            @Override
+            public void onAdDisplayed(Ad ad) {
+                //当开屏成功显示后会回调
+                mSplashAd = null;
+                Toast.makeText(getApplicationContext(), "开屏显示了",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                //当点击开屏广告
+                Toast.makeText(getApplicationContext(), "开屏被点击",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClosed(Ad ad) {
+                //当开屏广告关闭时会回调
+                Toast.makeText(getApplicationContext(), "开屏关闭",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -303,17 +353,21 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 **a) 在7.0中下载安装apk文件共享必须使用FileProvider，所以需要在AndroidManifest.xml配置如下代码：**
 
 	<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.suntengmob_sample}}部分替换成当前应用包名，
-         authorities = "{{BuildConfig.APPLICATION_ID}}.download.download.MobSdk.fileProvider" ,
+         authorities = "{{BuildConfig.APPLICATION_ID}}.download.download.fileProvider" ,
           provider_paths为创建在xml文件夹内的资源文件 -->
 	<provider
         android:name="android.support.v4.content.FileProvider"
-        android:authorities="com.sunteng.suntengmob_sample.download.MobSdk.fileProvider"
+        android:authorities="com.sunteng.suntengmob_sample.download.fileProvider"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/provider_paths"/>
         </provider>
+
+> 注意：如果你的项目之前已经在AndroidManifest.xml配置过FileProvider，sdk的AdService类提供了在代码中统一配置FileProvider的接口设置authorities:
+
+` public static void setFileProviderAuthorities(String authorities);`
 
 **b) 可以看到在meta-data中，定义了一个资源路径，第二步就是创建res/xml/provider_paths.xml文件：**
 > **注意：只需把path中{{com.suntengmob.sdk}}部分替换成你当前项目的包名，复制到文件中即可。**

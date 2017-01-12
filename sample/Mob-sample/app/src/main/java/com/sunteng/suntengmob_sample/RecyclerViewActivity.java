@@ -33,8 +33,10 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
 
-        int placementId = getIntent().getIntExtra("placementId", 52);
         boolean isPreload = getIntent().getBooleanExtra("isPreload", true);
+
+
+        final String adUnitId = "2-38-52";
 
         recyclerView = (RecyclerView)findViewById(R.id.activity_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//这里用线性显示 类似于listview
@@ -48,13 +50,14 @@ public class RecyclerViewActivity extends AppCompatActivity implements RecyclerV
 
         showLoading();
 
-        mNativeAdsManager = new NativeAdsManager(placementId, 5);
+        // 一次性请求原生广告的数量为5
+        mNativeAdsManager = new NativeAdsManager(adUnitId, 5);
         if(!isPreload){
             mNativeAdsManager.disableImageResourcePreload();
         }
         mNativeAdsManager.loadAds(new NativeAdsManager.LoadAdsListener() {
             @Override
-            public void onLoadedAds(int placementId, int failedCount) {
+            public void onLoadedAds(String adUnitId, int failedCount) {
                 Log.e(TAG,"onFailedAds count = " + failedCount);
                 dismiss();
                 showContents();

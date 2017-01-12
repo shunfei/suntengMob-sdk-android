@@ -6,6 +6,11 @@
 
 ## Change Log
 
+01/12/2017 - v2.0.5
+* Update API.
+* New support  FileProvider.
+* Improve Sample
+
 12/07/2016 - v2.0.4  
 * New support Native Ad.  
 * New support Https.   

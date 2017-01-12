@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.suntengmob.sdk.Ad;
 import com.suntengmob.sdk.AdService;
 import com.suntengmob.sdk.core.BannerAdView;
@@ -31,10 +32,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String appKey = "8hME_QwQ2GkZT9.VDIwvwSY4*Skjg?Uf";
-    public static final String publisherId = "2";
-    public static final String appId = "38";
-    private Button showSplashAdBtn, showInterstitialAdBtn, showBannerBtn,showNativeAd,showMoreNativeAd;
     private LinearLayout parent_layout;
+
+    public InterstitialAd mInterstitialAd = null;
+    private SplashAd mSplashAd = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +46,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         setContentView(R.layout.activity_main);
-        AdService.init(this,publisherId,appKey,appId);
+        AdService.init(this,appKey);
         AdService.setDebug(true);
-        showSplashAdBtn = (Button) findViewById(R.id.splash);
-        showSplashAdBtn.setOnClickListener(this);
-        showInterstitialAdBtn = (Button) findViewById(R.id.interstitial);
-        showInterstitialAdBtn.setOnClickListener(this);
-        showBannerBtn = (Button) findViewById(R.id.banner);
-        showBannerBtn.setOnClickListener(this);
-        showNativeAd = (Button) findViewById(R.id.nativeAd);
-        showNativeAd.setOnClickListener(this);
-        showMoreNativeAd = (Button) findViewById(R.id.nativeAd_more);
-        showMoreNativeAd.setOnClickListener(this);
+        // 调用该方法可以设置FileProvider，需同manifest一起更改
+        // AdService.setFileProviderAuthorities("com.mob.sample");
+        initView();
+    }
+
+    private void initView() {
+        findViewById(R.id.bt_request_splash).setOnClickListener(this);
+        findViewById(R.id.bt_show_splash).setOnClickListener(this);
+        findViewById(R.id.bt_request_interstitial).setOnClickListener(this);
+        findViewById(R.id.bt_show_interstitial).setOnClickListener(this);
+        findViewById(R.id.bt_show_banner).setOnClickListener(this);
+        findViewById(R.id.nativeAd).setOnClickListener(this);
+        findViewById(R.id.nativeAd_more).setOnClickListener(this);
         parent_layout = (LinearLayout)findViewById(R.id.parent_layout);
     }
 
@@ -64,30 +68,97 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
-            case R.id.banner:
+            case R.id.bt_show_banner:
                 showBanner();
                 break;
-            case R.id.interstitial:
-                showInterstitalAd();
+            case R.id.bt_request_interstitial:
+                requestInterstitalAd();
                 break;
-            case R.id.splash:
-                showSplashAd();
+            case R.id.bt_show_interstitial:
+                showInterstitalAd(mInterstitialAd);
+                break;
+            case R.id.bt_request_splash:
+                requestSplashAd();
+                break;
+            case R.id.bt_show_splash:
+                showSplashAd(mSplashAd);
                 break;
             case R.id.nativeAd:
                 showNativeAd();
                 break;
             case R.id.nativeAd_more:
                 Intent intent = new Intent(this, RecyclerViewActivity.class);
-                intent.putExtra("placementId", 52);
                 intent.putExtra("isPreload", true);
                 startActivity(intent);
                 break;
         }
     }
 
+    private void requestSplashAd() {
+        final String adUnitId = "2-38-37"; //广告位id
+        SplashManager.getIns().loadAd(adUnitId, new SplashAdLoadedListener() {
+
+            @Override
+            public void onReceiveAd(SplashAd splashAd) {
+                mSplashAd = splashAd;
+                Toast.makeText(getApplicationContext(), "开屏广告请求成功",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailedToReceiveAd(String adUnitId, int code) {
+                //当开屏广告显示失败时会回调
+                mSplashAd = null;
+                switch (code){
+                    case AdService.CODE_BACK_AMOUNT:
+                        Toast.makeText(getApplicationContext(), "开屏返量",Toast.LENGTH_SHORT).show();
+                        break;
+                    case AdService.CODE_BLANK_RESPONSE:
+                        Toast.makeText(getApplicationContext(), "开屏留白",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "开屏展示失败",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+
+        });
+    }
+
+    private void requestInterstitalAd() {
+        final String adUnitId = "2-38-39";//广告位id
+        mInterstitialAd = new InterstitialAd(adUnitId); //实例化一个插屏广告
+        mInterstitialAd.loadAd(interstitialAdLoadedListener);
+    }
+
+    InterstitialAdLoadedListener interstitialAdLoadedListener = new InterstitialAdLoadedListener() {
+
+        @Override
+        public void onReceiveAd(InterstitialAd interstitialAd) {
+            mInterstitialAd = interstitialAd;
+            Toast.makeText(getApplicationContext(), "插屏广告请求成功",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailedToReceiveAd(String adUnitId , int code) {
+            //当广告加载失败时会回调onFailedToReceiveAd();
+            mInterstitialAd = null;
+            switch (code){
+                case AdService.CODE_BACK_AMOUNT:
+                    Toast.makeText(getApplicationContext(), "插屏返量",Toast.LENGTH_SHORT).show();
+                    break;
+                case AdService.CODE_BLANK_RESPONSE:
+                    Toast.makeText(getApplicationContext(), "插屏留白",Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(getApplicationContext(), "插屏展示失败",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
     private void showNativeAd(){
-        NativeAd ad = new NativeAd();
-        ad.setPlacementId(52);
+        final String adUnitId = "2-38-52";//广告位id
+        NativeAd ad = new NativeAd(adUnitId);
         ad.loadAd(new NativeAdLoadedListener() {
             @Override
             public void onReceiveAd(NativeAd ad) {
@@ -95,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailedToReceiveAd(int placementId, int code) {
+            public void onFailedToReceiveAd(String adUnitId, int code) {
                 switch (code){
                     case AdService.CODE_BACK_AMOUNT:
                         Toast.makeText(getApplicationContext(), "原生广告返量",Toast.LENGTH_SHORT).show();
@@ -111,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void showNativeAdView(NativeAd ad) {
+    private void showNativeAdView(NativeAd nativeAd) {
         NativeAdView nativeAdView = (NativeAdView) LayoutInflater.from(this).inflate(R.layout.ad_native_layout, null);
         TextView titleView = (TextView)nativeAdView.findViewById(R.id.ad_view_title);
         TextView descriptionView = (TextView)nativeAdView.findViewById(R.id.ad_view_body);
@@ -121,29 +192,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView mediaView = (ImageView)nativeAdView.findViewById(R.id.ad_view_image);
         ImageView logoView = (ImageView)nativeAdView.findViewById(R.id.item_logo_img);
 
-        titleView.setText(ad.getTitle());
-        descriptionView.setText(ad.getDescription());
-        actionButton.setText(ad.getButtonContent());
+        titleView.setText(nativeAd.getTitle());
+        descriptionView.setText(nativeAd.getDescription());
+        actionButton.setText(nativeAd.getButtonContent());
 
-        List<NativeAd.Image> images = ad.getImages();
-        mediaView.setImageDrawable(images.get(0).getDrawable());
+        if (!nativeAd.isPreloadImageResource()){
+            List<NativeAd.Image> images = nativeAd.getImages();
+            Glide.with(this).load(images.get(0).getUrl()).into(mediaView);
 
-        NativeAd.Image icon_image = ad.getIconImage();
-        iconView.setImageDrawable(icon_image.getDrawable());
+            NativeAd.Image icon_image = nativeAd.getIconImage();
+            Glide.with(this).load(icon_image.getUrl()).into(iconView);
 
-        NativeAd.Image logo_image = ad.getLogoImage();
-        logoView.setImageDrawable(logo_image.getDrawable());
+            NativeAd.Image logo_image = nativeAd.getLogoImage();
+            Glide.with(this).load(logo_image.getUrl()).into(logoView);
+        }else{
+            List<NativeAd.Image> images = nativeAd.getImages();
+            mediaView.setImageDrawable(images.get(0).getDrawable());
 
-        ad.registerView(nativeAdView);
+            NativeAd.Image icon_image = nativeAd.getIconImage();
+            iconView.setImageDrawable(icon_image.getDrawable());
+
+            NativeAd.Image logo_image = nativeAd.getLogoImage();
+            logoView.setImageDrawable(logo_image.getDrawable());
+        }
+
+        nativeAd.registerView(nativeAdView);
         parent_layout.addView(nativeAdView, 0);
     }
 
     private void showBanner(){
+        final String adUnitId = "2-38-38";
         FrameLayout.LayoutParams layoutParams =
                 new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
-        BannerAdView bannerAdView = new BannerAdView(this, 38 ,1080, 200); //默然自适应屏幕
+        BannerAdView bannerAdView = new BannerAdView(this, adUnitId ,1080, 200); //默然自适应屏幕
         bannerAdView.setAdListener(new BannerAdListener() {
             @Override
             public void onSwitched(BannerAdView adView) {
@@ -177,92 +260,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void showSplashAd(){
+    private void showSplashAd(SplashAd splashAd){
         final int placementId = 37; //广告位id
-        SplashManager.getIns().loadAd(placementId, new SplashAdLoadedListener() {
+
+        if(splashAd == null){
+            Toast.makeText(getApplicationContext(), "开屏请求未成功",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        splashAd.showAd(new AdDisplayListener() {
             @Override
-            public void onReceiveAd(SplashAd splashAd) {
-                splashAd.showAd(new AdDisplayListener() {
-                    @Override
-                    public void onAdDisplayed(Ad ad) {
-                        //当开屏成功显示后会回调
-                        Toast.makeText(getApplicationContext(), "开屏显示了",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-                        //当点击开屏广告
-                        Toast.makeText(getApplicationContext(), "开屏被点击",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onAdClosed(Ad ad) {
-                        //当开屏广告关闭时会回调
-                        Toast.makeText(getApplicationContext(), "开屏关闭",Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onAdDisplayed(Ad ad) {
+                //当开屏成功显示后会回调
+                mSplashAd = null;
+                Toast.makeText(getApplicationContext(), "开屏显示了",Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailedToReceiveAd(int placementId, int code) {
-                //当开屏广告显示失败时会回调
-                switch (code){
-                    case AdService.CODE_BACK_AMOUNT:
-                        Toast.makeText(getApplicationContext(), "开屏返量",Toast.LENGTH_SHORT).show();
-                        break;
-                    case AdService.CODE_BLANK_RESPONSE:
-                        Toast.makeText(getApplicationContext(), "开屏留白",Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(getApplicationContext(), "开屏展示失败",Toast.LENGTH_SHORT).show();
-                        break;
-                }
+            public void onAdClicked(Ad ad) {
+                //当点击开屏广告
+                Toast.makeText(getApplicationContext(), "开屏被点击",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClosed(Ad ad) {
+                //当开屏广告关闭时会回调
+                Toast.makeText(getApplicationContext(), "开屏关闭",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    private void showInterstitalAd(){
-        InterstitialAd interstitialAd = new InterstitialAd(); //实例化一个插屏广告
-        interstitialAd.setPlacementId(39);
-        interstitialAd.loadAd( new InterstitialAdLoadedListener() {
-            @Override
-            public void onReceiveAd(InterstitialAd interstitialAd) {
+    private void showInterstitalAd(InterstitialAd interstitialAd){
 
-                //加载完成广告会回调onReceiveAd(),在此时便可调用showAd()进行广告展示
-                interstitialAd.showAd(new AdDisplayListener() {
-                    @Override
-                    public void onAdDisplayed(Ad ad) {
-                        //当插屏广告展现
-                        Toast.makeText(getApplicationContext(),"插屏展示",Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onAdClicked(Ad ad) {
-                        Toast.makeText(getApplicationContext(),"插屏点击",Toast.LENGTH_SHORT).show();
-                        //当用户点击广告
-                    }
-                    @Override
-                    public void onAdClosed(Ad ad) {
-                        //当用户点击关闭广告或在广告界面按下back键
-                        Toast.makeText(getApplicationContext(),"插屏关闭",Toast.LENGTH_SHORT).show();
-                    }
-                });
+        if (interstitialAd == null || !interstitialAd.isLoaded()){
+            Toast.makeText(getApplicationContext(),"插屏请求未完成",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //加载完成广告会回调onReceiveAd(),在此时便可调用showAd()进行广告展示
+        interstitialAd.showAd(new AdDisplayListener() {
+            @Override
+            public void onAdDisplayed(Ad ad) {
+                //当插屏广告展现
+                mInterstitialAd = null;
+                Toast.makeText(getApplicationContext(),"插屏展示",Toast.LENGTH_SHORT).show();
             }
-
             @Override
-            public void onFailedToReceiveAd(int placementId , int code) {
-                //当广告加载失败时会回调onFailedToReceiveAd();
-                switch (code){
-                    case AdService.CODE_BACK_AMOUNT:
-                        Toast.makeText(getApplicationContext(), "插屏返量",Toast.LENGTH_SHORT).show();
-                        break;
-                    case AdService.CODE_BLANK_RESPONSE:
-                        Toast.makeText(getApplicationContext(), "插屏留白",Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(getApplicationContext(), "插屏展示失败",Toast.LENGTH_SHORT).show();
-                        break;
-                }
+            public void onAdClicked(Ad ad) {
+                Toast.makeText(getApplicationContext(),"插屏点击",Toast.LENGTH_SHORT).show();
+                //当用户点击广告
+            }
+            @Override
+            public void onAdClosed(Ad ad) {
+                //当用户点击关闭广告或在广告界面按下back键
+                Toast.makeText(getApplicationContext(),"插屏关闭",Toast.LENGTH_SHORT).show();
             }
         });
     }

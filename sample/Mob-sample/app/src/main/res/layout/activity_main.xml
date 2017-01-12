@@ -12,21 +12,52 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical">
 
+        <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+            <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="插屏请求"
+                    android:id="@+id/bt_request_interstitial" />
+
+            <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="插屏展示"
+                    android:id="@+id/bt_show_interstitial" />
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="开屏请求"
+                android:id="@+id/bt_request_splash" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="开屏展示"
+                android:id="@+id/bt_show_splash" />
+        </LinearLayout>
+
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="开启插屏"
-            android:id="@+id/interstitial" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="显示开屏"
-            android:id="@+id/splash" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="显示banner(1080x200)"
-            android:id="@+id/banner" />
+            android:text="显示banner"
+            android:id="@+id/bt_show_banner" />
+
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
