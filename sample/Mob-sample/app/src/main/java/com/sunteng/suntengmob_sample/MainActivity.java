@@ -287,6 +287,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //当开屏广告关闭时会回调
                 Toast.makeText(getApplicationContext(), "开屏关闭",Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onAdDisplayFail(Ad ad, String msg) {
+                //当广告过期了会回调
+                Toast.makeText(getApplicationContext(), "开屏展示失败，广告过期了，请重新请求",Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -315,6 +321,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAdClosed(Ad ad) {
                 //当用户点击关闭广告或在广告界面按下back键
                 Toast.makeText(getApplicationContext(),"插屏关闭",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdDisplayFail(Ad ad, String msg) {
+                //当广告过期了会回调
+                Toast.makeText(getApplicationContext(), "插屏展示失败，广告过期了，请重新请求",Toast.LENGTH_SHORT).show();
             }
         });
     }

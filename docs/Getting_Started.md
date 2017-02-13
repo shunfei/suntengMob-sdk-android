@@ -1,4 +1,4 @@
-# SuntengMob SDK V2.0.5
+# SuntengMob SDK V2.0.6
 ### 一、导入sdk
     将sdk解压后的libs目录下的jar文件导入到工程指定的libs目录
 ### 二、配置AndroidManifest.xml文件
@@ -98,6 +98,13 @@
                 //当用户点击关闭广告或在广告界面按下back键
                 Toast.makeText(getApplicationContext(),"插屏关闭",Toast.LENGTH_SHORT).show();
             }
+            
+            @Override
+            public void onAdDisplayFail(Ad ad, String msg) {
+                //当广告过期了会回调
+                Toast.makeText(getApplicationContext(), "插屏展示失败，广告过期了，请重新请求",Toast.LENGTH_SHORT).show();
+            }
+            
         });
     }
     
@@ -173,6 +180,14 @@
                 //当开屏广告关闭时会回调
                 Toast.makeText(getApplicationContext(), "开屏关闭",Toast.LENGTH_SHORT).show();
             }
+            
+            
+            @Override
+            public void onAdDisplayFail(Ad ad, String msg) {
+                //当广告过期了会回调
+                Toast.makeText(getApplicationContext(), "开屏展示失败，广告过期了，请重新请求",Toast.LENGTH_SHORT).show();
+            }
+            
         });
     }
  > *SplashManager.getIns().loadAd(placementId, listener)*方法中第一个参数为广告位id，第二个参数是用来监听广告竞价是否成功的回调。
