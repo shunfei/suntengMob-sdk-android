@@ -10,9 +10,16 @@
 
 **Sample App Download**
 
-[Sample Apk](https://raw.githubusercontent.com/shunfei/suntengMob-sdk-android/master/sample/MobSample.apk)
+[Sample Apk](https://raw.githubusercontent.com/shunfei/suntengMob-sdk-android/master/Sample/MobSample.apk)
  
 ## Change Log
+
+03/23/2017 - [v3.0.0](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.0.0)
+
+* New support Native Video Ad and Rewarded Video Ad.
+* Update API.
+* Improve performance.
+* Fix Bug.
 
 02/13/2017 - [v2.0.6](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v2.0.6)
 
@@ -41,4 +48,4 @@
 ## 效果展示
 
 **Sample App下载**
- [Sample Apk](https://raw.githubusercontent.com/shunfei/suntengMob-sdk-android/master/sample/MobSample.apk)  
+ [Sample Apk](https://raw.githubusercontent.com/shunfei/suntengMob-sdk-android/master/Sample/MobSample.apk)  

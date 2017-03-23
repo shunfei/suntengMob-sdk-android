@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_demo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:id="@+id/ll_ads_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="显示banner"
+            android:id="@+id/banner"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loadInterstitial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="请求插屏"/>
+            <Button
+                android:id="@+id/showInterstitial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="展示插屏"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_load_full_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="请求全屏视频"/>
+            <Button
+                android:id="@+id/bt_show_full_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="展示全屏视频"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_load_window_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="请求窗口视频"/>
+            <Button
+                android:id="@+id/bt_show_window_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="展示窗口视频"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_window_parent"
+            android:visibility="gone"
+            android:layout_width="200dp"
+            android:layout_height="150dp">
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/bt_show_native_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="展示原生广告"/>
+
+        <Button
+            android:id="@+id/bt_show_native_ads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请求多个原生广告"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loadSplash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="请求开屏"/>
+            <Button
+                android:id="@+id/showSplash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="展示开屏"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_splash_parent"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

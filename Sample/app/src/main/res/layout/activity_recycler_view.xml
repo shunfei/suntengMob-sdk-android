@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)  2011-2016.  SUNTENG Corporation. All rights reserved File :
+  ~ Creation :  16-11-17 上午11:43
+  ~ Description : activity_recycler_view.xml
+  ~ Author : baishixian@sunteng.com
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sunteng.ads.sample.RecyclerViewActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_recycler_view">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>
