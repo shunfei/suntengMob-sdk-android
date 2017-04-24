@@ -434,15 +434,15 @@ protected void onResume() {
 |:-----       |:-----:| :-------:         |
 |VideoAdService.PLAYDONE| 200   |	播放完视频后用户点击了返回  |
 |MVideoAdService.INSTALL_APK_DONE      | 201   |  安装了推广的app后返回  |
-|VideoAdService.PLAYDONE_SKIPVIDEO| 202  |	用户跳过了视频后返回  |
-|VideoAdService.LAUNCH_APP| 203   |	播放完视频后点击了返回  |
-|VideoAdService.OPEN_WEB      | 206   |  安装了推广的app后返回  |
+|VideoAdService.PLAYDONE_SKIPVIDEO| 202  |	用户跳过了广告视频 |
+|VideoAdService.LAUNCH_APP| 203   |	用户点击广告打开了推广的app后返回  |
+|VideoAdService.OPEN_WEB      | 206   |  用户点击广告打开了推广落地页  |
 |VideoAdService.PLAYDONE_CLOSEDETAIL| 208 | 用户看完视频后在推广详情页面点击关闭视频|
 |VideoAdService.CLICK_DOWNLOAD| 209 | 用户点击下载推广app|
 | VideoAdService.ERROR_NO_VIDEO | 204   |	没有请求到广告内容  |
-| VideoAdService.ERROR_DOWNLOAD: | 400 |视频下载错误|
-| VideoAdService.ERROR_PLAYING_VIDEO      | 401   | 播放中错误   |
-| VideoAdService.ERROR_CLOSE_VIDEO      | 402   |  关闭视频失败  |
+| VideoAdService.ERROR_DOWNLOAD: | 400 |视频下载中遇到错误|
+| VideoAdService.ERROR_PLAYING_VIDEO      | 401   | 播放中遇到错误   |
+| VideoAdService.ERROR_CLOSE_VIDEO      | 402   |  点击关闭结束了视播放了 |
 | VideoAdService.ERROR_AUTO_PLAY  | 403   |  自动播放失败  |
 | VideoAdService.ERROR_MANUAL_DOWNLOAD: | 404 |手动请求下载广告资源失败|
 
