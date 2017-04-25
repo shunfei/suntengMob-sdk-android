@@ -12,12 +12,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     
     <!-- 以下是申明Activity：-->
-    <activity android:name="com.suntengmob.sdk.activity.InterstitialActivity"
+    <activity android:name="com.sunteng.ads.interstitial.activity.InterstitialActivity"
               android:theme="@android:style/Theme.Translucent"
               android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
-    <activity android:name="com.suntengmob.sdk.activity.BrowserAdActivity"
+    <activity android:name="com.sunteng.ads.splash.activity.BrowserAdActivity"
               android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
-    <activity android:name="com.suntengmob.sdk.activity.SplashActivity"
+    <activity android:name="com.sunteng.ads.splash.activity.SplashActivity"
               android:screenOrientation="portrait"
               android:resizeableActivity="false"
               android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"/>
@@ -455,12 +455,12 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 **2、文件共享**
 **a) 在7.0中下载安装apk文件共享必须使用FileProvider，所以需要在AndroidManifest.xml配置如下代码：**
 
-	<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.suntengmob_sample}}部分替换成当前应用包名，
-         authorities = "{{BuildConfig.APPLICATION_ID}}.download.download.fileProvider" ,
+	<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.ads.sample}}部分替换成当前应用包名，
+         authorities = "{{BuildConfig.APPLICATION_ID}}.download.fileProvider" ,
           provider_paths为创建在xml文件夹内的资源文件 -->
 	<provider
         android:name="android.support.v4.content.FileProvider"
-        android:authorities="com.sunteng.ads.sampe.download.fileProvider"
+        android:authorities="com.sunteng.ads.sample.download.fileProvider"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data
@@ -473,13 +473,13 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 ` public static void setFileProviderAuthorities(String authorities);`
 
 **b) 可以看到在meta-data中，定义了一个资源路径，第二步就是创建res/xml/provider_paths.xml文件：**
-> **注意：只需把path中{{com.suntengmob.sdk}}部分替换成你当前项目的包名，复制到文件中即可。**
+> **注意：只需把path中{{com.sunteng.ads.sample}}部分替换成你当前项目的包名，复制到文件中即可。**
 
 	<?xml version="1.0" encoding="utf-8"?>
 	<paths xmlns:android="http://schemas.android.com/apk/res/android">
-	     <!--/storage/emulated/0/Android/com.sunteng.ads.sampe/files/APK/-->
-   		 <!--把path中{{com.sunteng.ads.sampe}}部分替换成项目的包名!-->
-  	  	 <external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sampe/files/APK/"/>
+	     <!--/storage/emulated/0/Android/com.sunteng.ads.sample/files/APK/-->
+   		 <!--把path中{{com.sunteng.ads.sample}}部分替换成项目的包名!-->
+  	  	 <external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
 	</paths>
 	
 ###十一、其他
