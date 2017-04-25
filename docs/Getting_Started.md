@@ -35,7 +35,7 @@
          AdService.init(Activity activity, String appSecret);
          
  >**注意:**
- > appKey需从sunteng获取
+ > appSecret 需从 sunteng 获取
 
 ### 四、插屏广告展示
     /**
@@ -184,7 +184,7 @@
         addContentView(bannerAdView, layoutParams);
     }
   > **注意:**
- > BannerAdView构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
+ > BannerAdView 构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
  
 ###七、原生广告(NativeAd)
 
@@ -252,7 +252,7 @@
     
 >a) *ad.disableImageResourcePreload()；*作用为关闭图片预加载，SDK会默认加载广告中的用到的资源图片，若开发者调用了这个方法，再调用NativeAd.Image或者其子类中的getDrawabl()方法时，将会获得一个空值,此时开发者若要展示NativeAd的图片，需要调用getUrl()方法获取图片的URL，然后自行处理（可利用第三方图片加载库完成，如 Glide 或 Fresco 等）；
 
->b) *R.layout.ad_native_layout*是一个被*com.suntengmob.sdk.core.NativeAdView*包裹的自定义布局，开发者需要根据自己的展示需要自定义布局中的内容，并且NativeAdView是FrameLayout的子类;
+>b) *R.layout.ad_native_layout*是一个被*com.sunteng.ads.nativead.core.NativeAdView*包裹的自定义布局，开发者需要根据自己的展示需要自定义布局中的内容，并且NativeAdView是FrameLayout的子类;
 
 >c) NativeAdView的数据填充完毕之后，需要调用*ad.registerView(nativeAdView);*方法,否则SDK无法统计到用户的行为。
 
