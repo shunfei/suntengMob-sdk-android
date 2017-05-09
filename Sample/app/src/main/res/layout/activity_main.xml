@@ -130,6 +130,12 @@
             android:layout_height="wrap_content">
         </RelativeLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="视频贴片广告"
+            android:id="@+id/preMovie"/>
+
     </LinearLayout>
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-<!--/storage/emulated/0/Android/com.suntengmob.sdk/files/SSP/-->
-<!--{{com.suntengmob.sdk}} 替换成项目的包名!-->
-<external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sampe/files/APK/"/>
+<!--/storage/emulated/0/Android/com.sunteng.ads.sample/files/APK/-->
+<!--{{com.sunteng.ads.sample}} 替换成项目的包名!-->
+<external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
 </paths>

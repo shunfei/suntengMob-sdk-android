@@ -14,6 +14,12 @@
  
 ## Change Log
 
+05/09/2017 - [v3.1.0](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.1.0)
+* New support InstreamAd (贴片视频广告)
+* Improve performance.
+* Fix Bug.
+* Update API.
+
 03/23/2017 - [v3.0.0](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.0.0)
 
 * New support Native Video Ad and Rewarded Video Ad.

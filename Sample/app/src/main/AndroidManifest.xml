@@ -27,7 +27,10 @@
         <activity android:name="com.sunteng.ads.sample.MainActivity">
         </activity>
 
-        <activity android:name="com.sunteng.ads.splash.activity.BrowserAdActivity"
+        <activity android:name=".sample.PreMovieActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
+
+        <activity android:name="com.sunteng.ads.commonlib.activity.BrowserAdActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
 
         <activity android:name="com.sunteng.ads.interstitial.activity.InterstitialActivity"
@@ -41,7 +44,7 @@
             android:theme="@android:style/Theme.NoTitleBar" />
 
         <provider
-            android:authorities="com.sunteng.ads.download.apk.fileProvider"
+            android:authorities="${applicationId}.fileProvider"
             android:name="android.support.v4.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

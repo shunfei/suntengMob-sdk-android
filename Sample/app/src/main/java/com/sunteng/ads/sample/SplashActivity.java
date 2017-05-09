@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
         AdServices.setLocationEnabled(true);
         AdServices.setIsDebugModel(true);
         VideoAdService.setCloseVideoEnable(false);
-        mSplashAd = new SplashAd("2-38-48");
+        mSplashAd = new SplashAd("2-38-37");
         mSplashAd.setAdListener(new SplashAdListener() {
             @Override
             public void onAdLoaded() {

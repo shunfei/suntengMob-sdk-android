@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context mContext;
 
-    private Button mBannerBtn;
+    private Button mBannerBtn, mPreMovieBtn;
     private Button mLoadInterstitialBtn, mShowInterstitialBtn;
     private Button mLoadSplash, mShowSplash;
 
@@ -86,12 +86,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLoadSplash.setOnClickListener(this);
         mShowSplash = (Button) findViewById(R.id.showSplash);
         mShowSplash.setOnClickListener(this);
+        mPreMovieBtn = (Button) findViewById(R.id.preMovie);
+        mPreMovieBtn.setOnClickListener(this);
 
     }
 
 
     private void loadSplash(){
-        mSplashAd = new SplashAd("2-38-48");
+        mSplashAd = new SplashAd("2-38-37");
         mSplashAd.setAdListener(new SplashAdListener() {
             @Override
             public void onAdLoaded() {
@@ -241,8 +243,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.showSplash:
                 showSplash();
                 break;
-
+            case R.id.preMovie:
+                showPreMovie();
+                break;
         }
+    }
+
+    private void showPreMovie(){
+        Intent i = new Intent(this, PreMovieActivity.class);
+        startActivity(i);
     }
 
     private void showNativeAds() {
