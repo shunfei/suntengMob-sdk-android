@@ -1,34 +1,6 @@
 # SuntengMob SDK V3.1.0
 ### 一、导入sdk
     将sdk解压后的libs目录下的jar文件导入到工程指定的libs目录
-<<<<<<< Updated upstream
-### 二、配置AndroidManifest.xml文件
-    <!-- 请将下面权限配置代码复制到AndroidManifest.xml文件中：-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
-    <!-- 以下是申明Activity：-->
-    <activity android:name="com.sunteng.ads.interstitial.activity.InterstitialActivity"
-              android:theme="@android:style/Theme.Translucent"
-              android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
-    <activity android:name="com.sunteng.ads.splash.activity.BrowserAdActivity"
-              android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
-    <activity android:name="com.sunteng.ads.splash.activity.SplashActivity"
-              android:screenOrientation="portrait"
-              android:resizeableActivity="false"
-              android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"/>
-    <activity android:name="com.sunteng.ads.video.core.VideoActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
-                  tools:ignore="UnusedAttribute"
-                  android:theme="@android:style/Theme.NoTitleBar" />
-    <!-- 以上是申明Activity：-->
-
-=======
 ### 二、配置AndroidManifest.xml文件  
 
 ```xml
@@ -57,7 +29,6 @@
               android:theme="@android:style/Theme.NoTitleBar" />
 <!-- 以上是申明Activity：-->
 ```
->>>>>>> Stashed changes
 ### 三、SDK初始化 
 
 **调用初始化**：  
@@ -221,11 +192,7 @@ private void showSplash(){
   }
 ```
   > **注意:**
-<<<<<<< Updated upstream
- > BannerAdView 构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
-=======
  > `BannerAdView` 构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
->>>>>>> Stashed changes
  
 ### 七、原生广告(NativeAd)
 
@@ -294,11 +261,7 @@ private void showSplash(){
 ```    
 >a) `ad.disableImageResourcePreload()；`作用为关闭图片预加载，SDK会默认加载广告中的用到的资源图片，若开发者调用了这个方法，再调用`NativeAd.Image`或者其子类中的`getDrawabl()`方法时，将会获得一个空值,此时开发者若要展示`NativeAd`的图片，需要调用`getUrl()`方法获取图片的URL，然后自行处理（可利用第三方图片加载库完成，如 Glide 或 Fresco 等）；
 
-<<<<<<< Updated upstream
->b) *R.layout.ad_native_layout*是一个被*com.sunteng.ads.nativead.core.NativeAdView*包裹的自定义布局，开发者需要根据自己的展示需要自定义布局中的内容，并且NativeAdView是FrameLayout的子类;
-=======
 >b) `R.layout.ad_native_layout`是一个`com.sunteng.ads.nativead.core.NativeAdView`包裹的自定义布局，开发者需要根据自己的展示需要自定义布局中的内容，并且`NativeAdView`是`FrameLayout`的子类;
->>>>>>> Stashed changes
 
 >c) `NativeAdView`的数据填充完毕之后，需要调用`ad.registerView(nativeAdView);`方法,否则SDK无法统计到用户的行为。
 
@@ -606,19 +569,11 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 **a) 在7.0中下载安装apk文件共享必须使用FileProvider，所以需要在AndroidManifest.xml配置如下代码：**
 
 	<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.ads.sample}}部分替换成当前应用包名，
-<<<<<<< Updated upstream
-         authorities = "{{BuildConfig.APPLICATION_ID}}.download.fileProvider" ,
-          provider_paths为创建在xml文件夹内的资源文件 -->
-	<provider
-        android:name="android.support.v4.content.FileProvider"
-        android:authorities="com.sunteng.ads.sample.download.fileProvider"
-=======
          authorities = "{{BuildConfig.APPLICATION_ID}}.fileProvider" ,
           provider_paths为创建在xml文件夹内的资源文件 -->
 	<provider
         android:name="android.support.v4.content.FileProvider"
         android:authorities="com.sunteng.ads.sample.fileProvider"
->>>>>>> Stashed changes
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data
@@ -633,14 +588,6 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 **b) 可以看到在meta-data中，定义了一个资源路径，第二步就是创建res/xml/provider_paths.xml文件：**
 > **注意：只需把path中{{com.sunteng.ads.sample}}部分替换成你当前项目的包名，复制到文件中即可。**
 
-<<<<<<< Updated upstream
-	<?xml version="1.0" encoding="utf-8"?>
-	<paths xmlns:android="http://schemas.android.com/apk/res/android">
-	     <!--/storage/emulated/0/Android/com.sunteng.ads.sample/files/APK/-->
-   		 <!--把path中{{com.sunteng.ads.sample}}部分替换成项目的包名!-->
-  	  	 <external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
-	</paths>
-=======
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
@@ -649,7 +596,6 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
  	<external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
 </paths>
 ```
->>>>>>> Stashed changes
 	
 ### 十二、其他
 **debug模式**  
@@ -658,11 +604,7 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 >传入参数为true时，为debug模式，有日志输出，默认值为true。发布正式版本时候请关闭debug模式。
 
 **位置信息获取开关**  
-<<<<<<< Updated upstream
-    AdService.setLocationEnable(boolean enable);
-=======
 
  `AdService.setLocationEnable(boolean enable);`
  
->>>>>>> Stashed changes
 >传入参数为true时，获取用户当前地理位置，默认值为true。
