@@ -1,4 +1,4 @@
-# SuntengMob SDK V3.1.0
+# SuntengMob SDK V3.1.1
 ### 一、导入sdk
     将sdk解压后的libs目录下的jar文件导入到工程指定的libs目录
 ### 二、配置AndroidManifest.xml文件  

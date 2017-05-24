@@ -14,7 +14,13 @@
  
 ## Change Log
 
+05/24/2017 - [v3.1.1](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.1.1)
+
+* Improve WebView compatibility
+* Fix Bug.
+
 05/09/2017 - [v3.1.0](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.1.0)
+
 * New support InstreamAd (贴片视频广告)
 * Improve performance.
 * Fix Bug.
