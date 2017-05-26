@@ -19,10 +19,6 @@
           android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
 <activity android:name="com.sunteng.ads.commonlib.activity.BrowserAdActivity"
           android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" />
-<activity android:name="com.sunteng.ads.splash.activity.SplashActivity"
-          android:screenOrientation="portrait"
-          android:resizeableActivity="false"
-          android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"/>
 <activity android:name="com.sunteng.ads.video.core.VideoActivity"
               android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
               tools:ignore="UnusedAttribute"
@@ -43,7 +39,7 @@
 ```java
 /**
  * 请求插屏广告示例代码
- * adUnitID 从官网获取
+ * adUnitID 从官网获取(测试广告位 2-38-43)
  */
  InterstitialAd mInterstitialAd = null;
  
@@ -61,7 +57,7 @@ private void showInterstitialAd(){ // 调用展示方法前先调用方法判断
     if (mInterstitialAd != null && mInterstitialAd.isReady()){
         mInterstitialAd.showAd();
     }else {
-        Toast.makeText(mContext, "插屏请求未完成", Toast.LENGTH_SHORT).show();
+      // 插屏请求未完成
     }
 }  
 
@@ -69,39 +65,45 @@ private void showInterstitialAd(){ // 调用展示方法前先调用方法判断
  InterstitialListener interstitialListener = new InterstitialListener() {
     @Override
     public void onAdLoaded() {
-       //加载完成广告会回调onReceiveAd(),也可以在此时便可调用showAd()进行广告展示
-        Toast.makeText(mContext, "竞价成功", Toast.LENGTH_SHORT).show();
+       // 广告加载完成会回调onReceiveAd() 此时可调用showAd()进行广告展示
     }
 
     @Override
     public void onAdShowFailed(int errorCode) {
-        Toast.makeText(mContext, "展示失败，errorCode:"+errorCode, Toast.LENGTH_SHORT).show();
+        //当插屏广告展示失败
+        //errorCode 是错误码，具体原因请查阅下文的失败错误码。
     }
 
     @Override
     public void onAdShowSuccess() {
         //当插屏广告展现
-        Toast.makeText(mContext, "展示成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAdClose() {
         //当用户点击关闭广告或在广告界面按下back键
-        Toast.makeText(mContext, "关闭", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAdClick() {
         //当用户点击广告
-        Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show();
     }
 };
 ```
            
  > **注意:**
- `InterstitialListener` 监听中的` onAdShowFailed(int code)`，code是错误码，具体原因请查阅下文的失败错误码。
+ `InterstitialListener` 中的` onAdShowFailed(int code)`，code是错误码，具体原因请查阅下文的失败错误码。
 
 ### 五、开屏广告展示
+
+开屏广告为方便广大开发者自定义启动页效果，使用开发者提供的 Activity 作为展示窗口。开发者只需在 App 启动页 Activity 中为开屏广告提供一个父布局容器即可，可自由控制开屏广告内容区域尺寸。
+> ```
+> /**
+>  * 展示开屏广告的方法
+>  * viewGroup 提供给开屏广告展示的父布局容器
+>  */
+> mSplashAd.showAd(ViewGroup viewGroup)
+> ```
 
 ```java    
 /**
@@ -114,45 +116,67 @@ private void loadSplash(){
   mSplashAd.setAdListener(new SplashAdListener() {
       @Override
       public void onAdLoaded() {
-          Toast.makeText(mContext, "开屏加载完成", Toast.LENGTH_SHORT).show();
+          // 开屏加载完成
       }
 
       @Override
       public void onFailed(int errorCode) {
-          Toast.makeText(mContext, "开屏加载失败", Toast.LENGTH_SHORT).show();
+          // 开屏加载失败
       }
 
       @Override
       public void onAdShowSuccess() {
-          Toast.makeText(mContext, "开屏展示完成", Toast.LENGTH_SHORT).show();
+          // 开屏展示完成
       }
 
       @Override
       public void onAdClose() {
-          Toast.makeText(mContext, "开屏被关闭", Toast.LENGTH_SHORT).show();
+          // 开屏被关闭
       }
 
       @Override
       public void onAdClick() {
-          Toast.makeText(mContext, "开屏被点击", Toast.LENGTH_SHORT).show();
+          // 开屏被点击
       }
   });
+  
+  mSplashAd.loadAd 可以手动请求广告
 }
 
 // 开屏广告如果 isReady() 判断为 false 时会自动缓存广告资源等待被下次调用
-private void showSplash(){
-  if (mSplash != null && mSplash.isReady()){
-      mSplash.showAd();
-  }else {
-      Toast.makeText(mContext, "开屏请求未完成", Toast.LENGTH_SHORT).show();
+  private void showSplash(){
+        if (mSplashAd != null && mSplashAd.isReady()){
+            mSplashAd.showAd(mSplashParent);
+            mSplashParent.setVisibility(View.VISIBLE);
+        }else {
+            // 开屏未请求完成
+        }
   }
-}
 ```
-  > 也提供 `loadAd()` 的方法可以手动请求广告，如下代码:
-  `mSplash.loadAd()`
+> **注意:** 开屏广告展示完成之后会自动缓存下一次广告内容，SDK 也提供 `loadAd()` 作为主动请求广告的方法
 
  
 ### 六、展示横幅广告(Banner)
+
+为方便开发者自定义横幅广告尺寸，提供了不同的 BannerAdView 的构造器。
+
+```
+/**
+ * 默认尺寸构造器（Banner 的宽高都是 WRAP_CONTENT 效果）
+ * @param context 上下文
+ * @param adUnitID 广告位Id 
+ */
+public BannerAdView(Context context, String adUnitID)  
+  
+/**
+ * 自定义尺寸构造器
+ * @param context 上下文
+ * @param adUnitID 广告位Id 
+ * @param width 广告的宽度
+ * @param height 广告的高度 (宽度和高度计量单位为px)
+ */
+ public BannerAdView(Context context, String adUnitID, int width, int height)
+```
 
 ```java    
 /**
@@ -169,22 +193,22 @@ private void showSplash(){
      bannerAdView.setAdListener(new BannerAdListener() {
           @Override
          public void onAdShowSuccess(BannerAd ad) {
-             Toast.makeText(mContext, "展示成功", Toast.LENGTH_SHORT).show();
+            // 展示成功
          }
          
          @Override
          public void onAdClose(BannerAd ad) {
-             Toast.makeText(mContext, "关闭成功", Toast.LENGTH_SHORT).show();
+             // 关闭成功
          }
          
          @Override
          public void onAdClick(BannerAd ad) {
-             Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show();
+            // 广告被点击
          }
          
          @Override
          public void onAdShowFailed(int errorCode, BannerAd ad) {
-             Util.printInfo("Show Banner onShowFailed,error code:"+code);
+             // 广告展示失败
           }
      });
      //将banner广告添加到父容器
@@ -198,9 +222,16 @@ private void showSplash(){
 
 **1、加载单个原生广告**
     
+原生广告（信息流广告）是内嵌于 App 原生内容中的广告形式，我们提供了 NativeAdView 布局让开发者可以快速自定义展示内容。
+    
+
+> NativeAdView 是 FrameLayout 的子类，作为展示原生广告的父布局容器，开发者可以定义 NativeAdView 布局中的元素类型和排列方式，展示内容从广告请求成功后的 NativeAd 中获取。
+
+> NativeAd 包括 Title（标题文本）, Description（描述文本）, ButtonContent（引导按钮文本）, IconImage（Icon图片）, LogoImage（Logo图片）, Images（1-3多张图片展示素材）
+    
 ```java    
 /**
-*示例代码：
+* 示例代码：
 * 实例化一个NativeAd，并调用loadAd()方法发起广告请求
 */
  final String adUnitId = "2-38-90";//广告位id
@@ -209,7 +240,7 @@ private void showSplash(){
  ad.setNativeAdListener(new NativeAdListener() {
      @Override
      public void onReceiveAd(NativeAd ad) {
-         Toast.makeText(getApplicationContext(), "Native广告加载完成",Toast.LENGTH_SHORT).show();
+         // Native广告加载完成
          showNativeAdView(ad);
      }
 
@@ -217,13 +248,12 @@ private void showSplash(){
      public void onFailed(NativeAd ad, int code) {
          switch (code){
              case SDKCode.CODE_BACK_AMOUNT:
-                 Toast.makeText(getApplicationContext(), "原生广告返量",Toast.LENGTH_SHORT).show();
-                 break;
+                 // 原生广告返量
              case SDKCode.CODE_BLANK_RESPONSE:
-                 Toast.makeText(getApplicationContext(), "原生广告留白",Toast.LENGTH_SHORT).show();
+                 // 原生广告留白
                  break;
              default:
-                 Toast.makeText(getApplicationContext(), "原生广告展示失败"+code,Toast.LENGTH_SHORT).show();
+                // 原生广告展示失败
                  break;
          }
      }
@@ -259,13 +289,16 @@ private void showSplash(){
      parent_layout.addView(nativeAdView);
  }
 ```    
->a) `ad.disableImageResourcePreload()；`作用为关闭图片预加载，SDK会默认加载广告中的用到的资源图片，若开发者调用了这个方法，再调用`NativeAd.Image`或者其子类中的`getDrawabl()`方法时，将会获得一个空值,此时开发者若要展示`NativeAd`的图片，需要调用`getUrl()`方法获取图片的URL，然后自行处理（可利用第三方图片加载库完成，如 Glide 或 Fresco 等）；
+**注意：SDK 默认会预下载广告中的用到的资源图片，可以关闭该功能使用第三方图片加载库实现。** 
+>a) 调用 `ad.disableImageResourcePreload()` 可以关闭图片预加载。调用该方法后，`NativeAd.Image`或者其子类中的`getDrawabl()`方法将会返回一个空值。此时展示`NativeAd`的图片，需调用`getUrl()`方法获取图片的URL，然后自行加载（可利用第三方图片加载库完成，如 Glide 或 Fresco 等）
 
->b) `R.layout.ad_native_layout`是一个`com.sunteng.ads.nativead.core.NativeAdView`包裹的自定义布局，开发者需要根据自己的展示需要自定义布局中的内容，并且`NativeAdView`是`FrameLayout`的子类;
+>b) 示例代码中的原生广告布局容器`R.layout.ad_native_layout`是`com.sunteng.ads.nativead.core.NativeAdView`包裹的自定义布局，开发者可以自定义布局中的内容。**`NativeAdView`是`FrameLayout`的子类;**
 
 >c) `NativeAdView`的数据填充完毕之后，需要调用`ad.registerView(nativeAdView);`方法,否则SDK无法统计到用户的行为。
 
 **2、加载多个原生广告**
+
+加载多个原生广告适合一次缓存多个广告的场景，适合在 ListView 或 RecyclerView 等列表式布局中使用。
 
 ```java
 /**
