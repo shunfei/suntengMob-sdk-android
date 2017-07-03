@@ -136,6 +136,26 @@
             android:text="视频贴片广告"
             android:id="@+id/preMovie"/>
 
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="添加单个视频信息流广告"
+                android:id="@+id/bt_add_video_nativead" />
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="多个视频信息流（自动播放）"
+                android:id="@+id/bt_video_nativead_list" />
+        <LinearLayout
+                android:id="@+id/ll_video_nativead_parent_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                >
+        </LinearLayout>
+
     </LinearLayout>
 
 

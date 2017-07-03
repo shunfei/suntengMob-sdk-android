@@ -1,6 +1,32 @@
 # SuntengMob SDK V3.1.1
-### 一、导入sdk
+
+
+## 目录
+* [一、导入sdk](#一、导入sdk)
+* [二、配置AndroidManifest.xml文件](#二、配置AndroidManifest.xml文件)
+* [三、SDK初始化](#三、SDK初始化)
+* [四、插屏广告展示](#四、插屏广告展示)
+* [五、开屏广告展示](#五、开屏广告展示)
+* [六、展示横幅广告(Banner)](#六、展示横幅广告(Banner))
+* [七、原生广告——图文信息流(NativeAd)](#七、原生广告——图文信息流(NativeAd))
+* [八、原生广告——视频信息流(VideoNativeAd)](#八、原生广告——视频信息流(VideoNativeAd))
+* [九、原生视频广告](#九、原生视频广告)
+* [十、视频贴片广告](#十、视频贴片广告)
+* [十一、广告展示失败时的一些错误码](#十一、广告展示失败时的一些错误码)
+* [十二、适配Android7.0](#十二、适配Android7.0)
+* [十三、其他](#十三、其他)
+	* [设置Debug模式](#设置Debug模式)
+	* [配置SDK的混淆规则](#配置SDK的混淆规则)
+	* [位置信息获取开关](#位置信息获取开关)
+	* [清除广告缓存文件](#清除广告缓存文件)
+
+<div id="一、导入sdk" />
+
+### 一、导入sdk 
     将sdk解压后的libs目录下的jar文件导入到工程指定的libs目录
+
+<div id="二、配置AndroidManifest.xml文件" />
+
 ### 二、配置AndroidManifest.xml文件  
 
 ```xml
@@ -25,17 +51,25 @@
               android:theme="@android:style/Theme.NoTitleBar" />
 <!-- 以上是申明Activity：-->
 ```
+
+<div id="三、SDK初始化" />
+
 ### 三、SDK初始化 
 
-**调用初始化**：  
-在主Activity的`onCreate()`调用下面静态方法：
+#### **调用初始化：**
+
+在主 Activity 的 `onCreate()` 中调用下面静态方法：
         
 `AdService.init(Activity activity, String appSecret);`
          
  >**注意:**
  > appSecret 需从 sunteng 获取
 
+
+<div id="四、插屏广告展示" />
+
 ### 四、插屏广告展示
+
 ```java
 /**
  * 请求插屏广告示例代码
@@ -94,31 +128,26 @@ private void showInterstitialAd(){ // 调用展示方法前先调用方法判断
  > **注意:**
  `InterstitialListener` 中的` onAdShowFailed(int code)`，code是错误码，具体原因请查阅下文的失败错误码。
 
+<div id="五、开屏广告展示" />
+
 ### 五、开屏广告展示
 
-开屏广告为方便广大开发者自定义启动页效果，使用开发者提供的 Activity 作为展示窗口。开发者只需在 App 启动页 Activity 中为开屏广告提供一个父布局容器即可，可自由控制开屏广告内容区域尺寸。
-> ```
-> /**
->  * 展示开屏广告的方法
->  * viewGroup 提供给开屏广告展示的父布局容器
->  */
-> mSplashAd.showAd(ViewGroup viewGroup)
-> ```
+开屏广告用于 App 启动页，开发者需为开屏广告提供一个父布局容器，可自由控制开屏广告的展示区域和尺寸。
 
 ```java    
 /**
 * 请求加载开屏广告示例代码
 */
 SplashAd mSplashAd = null;
-String adUnitId = "2-38-48";
+String adUnitId = "2-38-48"; // 测试广告位
 private void loadSplash(){
   mSplashAd = new SplashAd(adUnitId);
   mSplashAd.setAdListener(new SplashAdListener() {
       @Override
-      public void onAdLoaded() {
-          // 开屏加载完成
+      public void onAdLoaded() { 
+           // 开屏加载完成
       }
-
+      
       @Override
       public void onFailed(int errorCode) {
           // 开屏加载失败
@@ -140,10 +169,22 @@ private void loadSplash(){
       }
   });
   
-  mSplashAd.loadAd 可以手动请求广告
+  // 第一次可以调用 loadAd() 方法主动请求广告
+  // 开屏广告也具有自动预缓存功能
+  // 展示广告前可使用 isReady() 方法判断广告是否准备好
+  mSplashAd.loadAd() 
 }
-
-// 开屏广告如果 isReady() 判断为 false 时会自动缓存广告资源等待被下次调用
+ 
+ /**
+  * 展示开屏广告的方法
+  * viewGroup 提供给开屏广告展示的父布局容器
+  */
+  mSplashAd.showAd(ViewGroup viewGroup)
+  
+/**
+ * 展示开屏广告示例代码
+ * 开屏广告如果 isReady() 判断为 false 时会自动缓存广告资源等待被下次调用
+ */
   private void showSplash(){
         if (mSplashAd != null && mSplashAd.isReady()){
             mSplashAd.showAd(mSplashParent);
@@ -155,12 +196,14 @@ private void loadSplash(){
 ```
 > **注意:** 开屏广告展示完成之后会自动缓存下一次广告内容，SDK 也提供 `loadAd()` 作为主动请求广告的方法
 
- 
+
+<div id="六、展示横幅广告(Banner)" /> 
+
 ### 六、展示横幅广告(Banner)
 
 为方便开发者自定义横幅广告尺寸，提供了不同的 BannerAdView 的构造器。
 
-```
+```java
 /**
  * 默认尺寸构造器（Banner 的宽高都是 WRAP_CONTENT 效果）
  * @param context 上下文
@@ -215,10 +258,16 @@ public BannerAdView(Context context, String adUnitID)
      addContentView(bannerAdView, layoutParams);
   }
 ```
-  > **注意:**
- > `BannerAdView` 构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
+
+> **注意:**
  
-### 七、原生广告(NativeAd)
+> `BannerAdView` 构造方法中的4个参数分别为：上下文参数context，广告位Id，广告的宽度，广告的高度，宽度和高度计量单位为px。
+ 
+> 处于展示中的 Banner 具有自动刷新内容的功能，刷新的启用和时间间隔可在 SSP 管理后台中操作。
+ 
+<div id="七、原生广告——图文信息流(NativeAd)" /> 
+
+### 七、原生广告——图文信息流(NativeAd)
 
 **1、加载单个原生广告**
     
@@ -344,13 +393,208 @@ nativeAd.registerView((NativeAdView)adViewHolder.itemView);
 
  具体使用可参考 Samlpe 中的基于 RecyclerView 实现的代码示例。
  
-### 八、原生视频广告
+
+<div id="八、原生广告——视频信息流(VideoNativeAd)" /> 
+
+### 八、原生广告——视频信息流(VideoNativeAd)
+
+#### **展示单个视频信息流广告**
+
+原生广告（信息流视频广告）是将视频广告内容内嵌于 App 原生内容中的广告形式，我们提供了 VideoNativeAdView 布局让开发者可以快速自定义展示内容。视频播放组件内置于 MadieView 中，播放控制依赖于 SDK 内部完成。
+    
+
+> VideoNativeAdView 是 FrameLayout 的子类，作为展示原生广告的父布局容器，开发者可以定义 VideoNativeAdView 布局中的元素类型和排列方式，展示内容从广告请求成功后的 VideoNativeAd 实例中获取。
+
+> VideoNativeAd 包括 Title（标题文本）, Description（描述文本）, ButtonContent（引导按钮文本）, IconImage（Icon图片）, LogoImage（Logo图片）, 视频展示素材
+
+
+
+```java
+// 请求单个视频信息流广告
+ String adUnitId = "2-43-82"; //测试广告位id
+ VideoNativeAd videoNativeAd = new VideoNativeAd(adUnitId);
+ videoNativeAd.setNativeAdListener(new VideoNativeAdListener() {
+            @Override
+            public void onDisplayAd(VideoNativeAd ad) {
+                // 视频信息流广告曝光
+            }
+
+            @Override
+            public void onClickAd(VideoNativeAd ad) {
+                // 视频信息流广告被点击            
+            }
+
+            @Override
+            public void onReceiveAd(VideoNativeAd ad) {
+                // 视频信息流广告加载完成，可以展示
+                showVideoNativeAdView(ad);
+            }
+
+            @Override
+            public void onFailed(VideoNativeAd ad, int code) {
+                // 广告展示失败后会回调，code 对应下面的业务错误码表格
+            }
+        });
+ // 请求广告
+ videoNativeAd.loadAd();
+ 
+ 
+ // 展示视频信息流广告
+ void showVideoNativeAdView(VideoNativeAd videoNativeAd) {
+ 
+ 			// 判断广告素材资源的可用性
+			if(!videoNativeAd.isReady()){
+		    // 广告未加载完成，重新请求
+			}
+			// 检查广告是否过期
+			if(videoNativeAd.checkAdIsExpire()){
+			   // 广告过期，重新请求
+			}
+			
+        // 获取自定义的信息流视频布局 VideoNativeAdView
+        VideoNativeAdView nativeAdView = (VideoNativeAdView) LayoutInflater.from(this).inflate(R.layout.ad_video_native_layout, null);
+        
+        // 获取自定义展示内容的布局控件
+        // 展示标题内容的 TextView
+        TextView titleView = (TextView)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.ad_view_title);
+        // 展示描述文本的 TextView
+        TextView descriptionView = (TextView)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.ad_view_body);
+        // 展示指定动作的 Button
+        Button actionButton = (Button)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.ad_view_action_button);
+        // 展示图标的 ImageView
+        ImageView iconView = (ImageView)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.ad_view_header_image);
+        // 展示视频素材的 MediaView
+        MediaView mediaView = (MediaView)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.ad_mediaView);
+        // 展示logo的 ImageView
+        ImageView logoView = (ImageView)nativeAdView.findViewById(com.sunteng.ads.nativead.video.R.id.item_logo_img);
+
+	    // 使用广告请求成功后的 VideoNativeAd 实例获取广告填充内容
+	    // 填充文本内容
+        titleView.setText(videoNativeAd.getTitle());
+        descriptionView.setText(videoNativeAd.getDescription());
+        actionButton.setText(videoNativeAd.getButtonContent());
+        
+       // 填充视频内容
+        mediaView.setNativeAd(videoNativeAd);
+
+       // 填充图像内容
+        VideoNativeAd.Image icon_image = videoNativeAd.getIconImage();
+        iconView.setImageDrawable(icon_image.getDrawable());
+
+        VideoNativeAd.Image logo_image = videoNativeAd.getLogoImage();
+        logoView.setImageDrawable(logo_image.getDrawable());
+        
+        // 注册填充好内容的 VideoNativeAdView 到 VideoNativeAd 实例
+        videoNativeAd.registerView(nativeAdView);
+    }
+```
+
+> 为方便开发者对视频播放器的控制需求，SDK 提供如下接口控制播放器相关属性。
+
+#### **广告视频内容是否自适应（默认开启，全局有效）**
+
+```java
+/**
+ * 取消广告视频内容自适应（避免拉伸内容）
+ * 视频内容可能会无法铺满整个播放器
+ */
+ VideoNativeAd.disableVideoContentAdaptive();
+ 
+/**
+ * 设置广告视频内容自适应，视频画面铺满整个播放器
+ * 默认开启
+ */
+ VideoNativeAd.enableVideoContentAdaptive();
+```
+ 
+#### **设置广告视频静音播放功能（默认关闭，各广告位独立控制）**
+
+```java
+/**
+ * 启用视频静音播放功能
+ */
+VideoNativeAd videoNativeAd.enableMutePlayVideo();
+
+/**
+ * 禁用视频静音播放功能
+ */
+VideoNativeAd videoNativeAd.disableMutePlayVideo();
+```
+
+#### **设置广告视频自动播放功能（默认关闭，各广告位独立控制）**
+
+```java
+/**
+ * 启用视频自动播放功能
+ */
+VideoNativeAd videoNativeAd.enableAutoPlayVideo();
+
+/**
+ * 禁用视频自动播放功能
+ * 默认禁用
+ */
+VideoNativeAd videoNativeAd.disableAutoPlayVideo();
+
+```
+
+> **自动播放控制逻辑：**
+> 
+> **1.视图可见性定义：**视图处于 VISIBLE 状态且未被其他 view 覆盖，未处于锁屏、系统控制栏下拉、弹窗状态下。
+> 
+> 2.当包含了播放器视图（MediaView）的页面布局创建完成或是被动态添加到页面布局中时，视图处于可见状态时开始自动播放。
+> 
+> 3.对于ScrollView 、ListView 、RecyclerView 等滑动布局中，当播放器视图（MediaView）全部滑出屏幕完全不可见时视频自动暂停，视图滑入屏幕且可见区域占比为超高一半时开始自动播放。
+
+#### **2、加载多个视频信息流广告**
+
+加载多个视频信息流广告适合一次缓存多个广告的场景，适合在 ListView 或 RecyclerView 等列表式布局中使用。
+
+> SDK 内部完成了创建多个 VideoNativeAd 实例，分别进行广告请求，存放在一个缓存队列中，开发者可以从队列中取出缓存的广告实例。开发者也也可以自行实现。
+
+```java
+// 设置广告位 ID 和缓存广告队列的数量
+VideoNativeAdsManager mNativeAdsManager = new VideoNativeAdsManager(adUnitId, 10);
+
+// 请求广告
+mNativeAdsManager.loadAds(new VideoNativeAdsManager.LoadAdsListener() {
+            @Override
+            public void onLoadedAds(String adUnitId, int failedCount) {
+            // 请求完成的回调中会返回请求失败的数量
+                Log.e(TAG,"onFailedAds count = " + failedCount);
+            }
+        });
+        
+// 请求成功后，获取缓存队列中的 VideoNativeAd 实例       
+VideoNativeAd videoNativeAd = mNativeAdsManager.nextCacheAd();
+
+// 判断广告素材资源的可用性
+videoNativeAd.isReady();
+// 检查广告是否过期
+videoNativeAd.checkAdIsExpire();
+...
+
+ // 退出时也可以释放缓存在队列中的广告实例
+ mNativeAdsManager.release();
+        
+```
+ 具体使用可参考 Samlpe 中的基于 RecyclerView 实现的代码示例。
+ 
+
+<div id="九、原生视频广告" /> 
+
+### 九、原生视频广告
+
 **设置视频广告在播放中是否可关闭**
-  ``` VideoAdService.setCloseVideoEnable(boolean closeEnable); ```
+
+  
+ ```java 
+ VideoAdService.setCloseVideoEnable(boolean closeEnable); 
+ ```
 
 > 用于控制视频播放界面左上脚关闭按钮是否展示的开关，用户可以在播放中点击关闭按钮关闭广告。
 
 **创建视频广告组件**
+
 ```java
 /**
  * 创建一个全屏模式视频广告组件
@@ -360,6 +604,7 @@ nativeAd.registerView((NativeAdView)adViewHolder.itemView);
  */
  VideoAdService.createFullModelVideoAd(Activity activity, String adUnitID);
 ```
+
 ```java
 /**
  * 创建一个窗口模式视频广告组件
@@ -422,7 +667,9 @@ VideoAdListener videoAdListener  = new VideoAdListener() {
 ```
 
 **视频广告请求和资源下载** 
- `mWindowVideoAd.loadAd();`
+
+`mWindowVideoAd.loadAd();`
+
 `mFullScreenVideoAd.loadAd();`
 
 > 广告预加载包括预先请求广告和广告资源下载
@@ -443,7 +690,6 @@ if (mFullScreenVideoAd != null || mFullScreenVideoAd.isReady()){
      return;
 }
 
-
 @Override
 protected void onPause() {
     super.onPause();
@@ -462,7 +708,9 @@ protected void onResume() {
     
 ```  
 
-### 九、视频贴片广告  
+<div id="十、视频贴片广告" /> 
+
+### 十、视频贴片广告  
 
 **隐藏视频贴片右上角倒计时:**  
 `InStreamAdService.hideTimeProgress();`  
@@ -565,16 +813,20 @@ protected void onDestroy() {
 
 >b) 开发者需要在`Activity`的`onResume()`、`onPause()`、`onDestroy()`3个方法中分别调用`InStreamAd`的`onResume()`、`onPause()`、`onDestroy()`。
 
+<div id="十一、广告展示失败时的一些错误码" /> 
+
+### 十一、广告展示失败时的一些错误码
  
-### 十、广告展示失败时的一些错误码
-  `SDKCode.CODE_UNKNOWN_ERROR = -1;//异步请求过程中发生错误
-   SDKCode.CODE_HTTP_ERROR = 1; //处理http请求的过程中发生错误
-   SDKCode.CODE_PRELOAD_FIALED = 2; //广告资源加载失败
-   SDKCode.CODE_BAD_NETWORK = 0;//无网络或无网络权限
-   SDKCode.CODE_BLANK_RESPONSE = 201 // 竞价请求失败,返回留白
-   SDKCode.CODE_BACK_AMOUNT = 202; //竞价请求失败,返回返量`
-    
-    
+```java
+  SDKCode.CODE_UNKNOWN_ERROR = -1;//异步请求过程中发生错误
+  SDKCode.CODE_HTTP_ERROR = 1; //处理http请求的过程中发生错误
+  SDKCode.CODE_PRELOAD_FIALED = 2; //广告资源加载失败
+  SDKCode.CODE_BAD_NETWORK = 0;//无网络或无网络权限
+  SDKCode.CODE_BLANK_RESPONSE = 201 // 竞价请求失败,返回留白    
+  SDKCode.CODE_BACK_AMOUNT = 202; //竞价请求失败,返回返量
+```    
+ 
+ 
     
 |播放状态返回码      | 数值  |   含义          |
 |:-----       |:-----:| :-------:         |
@@ -592,7 +844,10 @@ protected void onDestroy() {
 | VideoAdService.ERROR_AUTO_PLAY  | 403   |  自动播放失败  |
 | VideoAdService.ERROR_MANUAL_DOWNLOAD: | 404 |手动请求下载广告资源失败|
 
-### 十一、适配Android7.0（如果不需要支持可直接跳过本段）
+
+<div id="十二、适配Android7.0" />
+
+### 十二、适配Android7.0（如果不需要支持可直接跳过本段）
 > 如果App需要支持Android7.0以上的设备，sdk提供了Android7.0多窗口模式和文件共享等相关特性的支持。  
 
 **1、Activity分屏适配**
@@ -601,22 +856,27 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
 **2、文件共享**
 **a) 在7.0中下载安装apk文件共享必须使用FileProvider，所以需要在AndroidManifest.xml配置如下代码：**
 
-	<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.ads.sample}}部分替换成当前应用包名，
-         authorities = "{{BuildConfig.APPLICATION_ID}}.fileProvider" ,
-          provider_paths为创建在xml文件夹内的资源文件 -->
-	<provider
-        android:name="android.support.v4.content.FileProvider"
-        android:authorities="com.sunteng.ads.sample.fileProvider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/provider_paths"/>
-        </provider>
+```xml
+<!-- 配置provider用于适配7.0, authorities的{{com.sunteng.ads.sample}}部分替换成当前应用包名，
+     authorities = "{{BuildConfig.APPLICATION_ID}}.fileProvider" ,
+      provider_paths为创建在xml文件夹内的资源文件 -->
+<provider
+    android:name="android.support.v4.content.FileProvider"
+    android:authorities="com.sunteng.ads.sample.fileProvider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths"/>
+    </provider>
+```
 
 > 注意：如果你的项目之前已经在AndroidManifest.xml配置过FileProvider，sdk的AdService类提供了在代码中统一配置FileProvider的接口设置authorities:
 
-`public static void setFileProviderAuthorities(String authorities);`
+```java
+ public static void setFileProviderAuthorities(String authorities);
+
+```
 
 **b) 可以看到在meta-data中，定义了一个资源路径，第二步就是创建res/xml/provider_paths.xml文件：**
 > **注意：只需把path中{{com.sunteng.ads.sample}}部分替换成你当前项目的包名，复制到文件中即可。**
@@ -629,15 +889,47 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
  	<external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
 </paths>
 ```
-	
-### 十二、其他
-**debug模式**  
+
+<div id="十三、其他" />	
+
+### 十三、其他
+
+<div id="设置Debug模式" />	
+
+#### **设置Debug模式**  
 
 `AdService.setIsDebugModel(boolean debug);`
 >传入参数为true时，为debug模式，有日志输出，默认值为true。发布正式版本时候请关闭debug模式。
 
-**位置信息获取开关**  
+<div id="配置SDK的混淆规则" />	
+
+#### **配置SDK的混淆规则**
+
+> 注意： SDK 支持的系统版本 API 需大于 14，因此需要在 AndroidManifest.xml 文件中指定了 android:targetSdkVersion>=14。如果需要兼容 Android 7.0 以上平台，请务必参照上面所述的 7.0 适配指导要求。
+
+**混淆要求：** 请在打包 apk 在混淆文件中加入如下混淆规则配置：
+
+```
+-keep class com.sunteng.** { *; }
+-keep interface com.sunteng.** { *; }
+-dontwarn com.sunteng.**
+```
+
+<div id="位置信息获取开关" />	
+
+#### **位置信息获取开关**  
 
  `AdService.setLocationEnable(boolean enable);`
  
->传入参数为true时，获取用户当前地理位置，默认值为true。
+>传入参数为 true 时，获取用户当前地理位置，默认值为 true 。
+
+<div id="清除广告缓存文件" />	
+
+#### **清除广告缓存文件**
+ 
+ `AdServices.releaseAllAdResource();`
+
+广告每次请求加载会产生一定量的资源缓存文件，开发者可以在闲时进行统一清理缓存（比如程序退出时，每次广告服务初始化前等），应避免在有广告展现的情况下清除资源。 
+
+
+

@@ -26,6 +26,10 @@ import com.sunteng.ads.interstitial.listener.InterstitialListener;
 import com.sunteng.ads.nativead.NativeAdView;
 import com.sunteng.ads.nativead.core.NativeAd;
 import com.sunteng.ads.nativead.listener.NativeAdListener;
+import com.sunteng.ads.nativead.video.MediaView;
+import com.sunteng.ads.nativead.video.VideoNativeAd;
+import com.sunteng.ads.nativead.video.VideoNativeAdView;
+import com.sunteng.ads.nativead.video.listener.VideoNativeAdListener;
 import com.sunteng.ads.splash.core.SplashAd;
 import com.sunteng.ads.splash.listener.SplashAdListener;
 import com.sunteng.ads.video.api.FullScreenVideoAd;
@@ -41,16 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context mContext;
 
-    private Button mBannerBtn, mPreMovieBtn;
-    private Button mLoadInterstitialBtn, mShowInterstitialBtn;
-    private Button mLoadSplash, mShowSplash;
-
     private InterstitialAd mInterstitialAd;
     private FullScreenVideoAd mFullScreenVideoAd;
     private WindowVideoAd mWindowVideoAd;
     private RelativeLayout mWindowVideoParent, mSplaashLayout;
     private LinearLayout mAdsParent;
     private SplashAd mSplashAd;
+    private LinearLayout mVideoNativeAdParent;
 
 
     @Override
@@ -66,28 +67,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView(){
-        mBannerBtn = (Button) findViewById(R.id.banner);
-        mBannerBtn.setOnClickListener(this);
-        mLoadInterstitialBtn = (Button) findViewById(R.id.loadInterstitial);
-        mLoadInterstitialBtn.setOnClickListener(this);
-        mShowInterstitialBtn = (Button) findViewById(R.id.showInterstitial);
-        mShowInterstitialBtn.setOnClickListener(this);
+        findViewById(R.id.banner).setOnClickListener(this);
+        findViewById(R.id.loadInterstitial).setOnClickListener(this);
+        findViewById(R.id.showInterstitial).setOnClickListener(this);
         findViewById(R.id.bt_load_window_video).setOnClickListener(this);
         findViewById(R.id.bt_show_window_video).setOnClickListener(this);
         findViewById(R.id.bt_load_full_video).setOnClickListener(this);
         findViewById(R.id.bt_show_full_video).setOnClickListener(this);
         findViewById(R.id.bt_show_native_ad).setOnClickListener(this);
         findViewById(R.id.bt_show_native_ads).setOnClickListener(this);
+        findViewById(R.id.loadSplash).setOnClickListener(this);
+        findViewById(R.id.showSplash).setOnClickListener(this);
+        findViewById(R.id.preMovie).setOnClickListener(this);
+        findViewById(R.id.bt_add_video_nativead).setOnClickListener(this);
+        findViewById(R.id.bt_video_nativead_list).setOnClickListener(this);
 
         mWindowVideoParent = (RelativeLayout) findViewById(R.id.rl_window_parent);
         mSplaashLayout = (RelativeLayout) findViewById(R.id.rl_splash_parent);
         mAdsParent = (LinearLayout) findViewById(R.id.ll_ads_parent);
-        mLoadSplash = (Button) findViewById(R.id.loadSplash);
-        mLoadSplash.setOnClickListener(this);
-        mShowSplash = (Button) findViewById(R.id.showSplash);
-        mShowSplash.setOnClickListener(this);
-        mPreMovieBtn = (Button) findViewById(R.id.preMovie);
-        mPreMovieBtn.setOnClickListener(this);
+        mVideoNativeAdParent = (LinearLayout) findViewById(R.id.ll_video_nativead_parent_layout);
 
     }
 
@@ -173,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onAdClick() {
+            Log.e("SuntengSdk","插屏点击");
             Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show();
         }
     };
@@ -193,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAdClick(BannerAd ad) {
                 Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show();
+                Log.e("SuntengSdk","横幅点击");
             }
 
             @Override
@@ -246,7 +246,105 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.preMovie:
                 showPreMovie();
                 break;
+            case R.id.bt_add_video_nativead:
+                showVideoNativeAd();
+                break;
+            case R.id.bt_video_nativead_list:
+                showVideoNativeAdList();
+                break;
         }
+    }
+
+    private void showVideoNativeAdList() {
+        Intent intent = new Intent(this, VideoNativeAdRecyclerViewActivity.class);
+        intent.putExtra("AdUnitId", "2-38-183");
+        startActivity(intent);
+    }
+
+    private void showVideoNativeAd() {
+        final String adUnitId = "2-38-183"; // 示例广告位id
+        boolean isAdaptiveContent = false; // 视频内容自适应
+        boolean isAutoPlay = false; // 视频自动播放
+        boolean isMutePlay = false; // 视频静音播放
+
+        VideoNativeAd ad = new VideoNativeAd(adUnitId);
+        if (!isAdaptiveContent){
+            VideoNativeAd.disableVideoContentAdaptive();
+        }else{
+            VideoNativeAd.enableVideoContentAdaptive();
+        }
+
+        if (isAutoPlay){
+            ad.enableAutoPlayVideo();
+        }else{
+            ad.disableAutoPlayVideo();
+        }
+
+        if (isMutePlay){
+            ad.enableMutePlayVideo();
+        }else{
+            ad.disableMutePlayVideo();
+        }
+
+        ad.setNativeAdListener(new VideoNativeAdListener() {
+            @Override
+            public void onDisplayAd(VideoNativeAd ad) {
+                Toast.makeText(getApplicationContext(), "视频信息流广告展示",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClickAd(VideoNativeAd ad) {
+                Toast.makeText(getApplicationContext(), "视频信息流广告被点击",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onReceiveAd(VideoNativeAd ad) {
+                showVideoNativeAdView(ad);
+            }
+
+            @Override
+            public void onFailed(VideoNativeAd ad, int code) {
+                switch (code){
+                    case SDKCode.CODE_BACK_AMOUNT:
+                        Toast.makeText(getApplicationContext(), "视频信息流广告返量",Toast.LENGTH_SHORT).show();
+                        break;
+                    case SDKCode.CODE_BLANK_RESPONSE:
+                        Toast.makeText(getApplicationContext(), "视频信息流广告留白",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "视频信息流广告展示失败"+code,Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+        ad.loadAd();
+    }
+
+    private void showVideoNativeAdView(VideoNativeAd nativeAd) {
+        VideoNativeAdView nativeAdView = (VideoNativeAdView) LayoutInflater.from(this).inflate(R.layout.ad_video_native_layout, null);
+        TextView titleView = (TextView)nativeAdView.findViewById(R.id.ad_view_title);
+        TextView descriptionView = (TextView)nativeAdView.findViewById(R.id.ad_view_body);
+        Button actionButton = (Button)nativeAdView.findViewById(R.id.ad_view_action_button);
+
+        ImageView iconView = (ImageView)nativeAdView.findViewById(R.id.ad_view_header_image);
+        MediaView mediaView = (MediaView)nativeAdView.findViewById(R.id.ad_mediaView);
+        ImageView logoView = (ImageView)nativeAdView.findViewById(R.id.item_logo_img);
+
+        titleView.setText(nativeAd.getTitle());
+        descriptionView.setText(nativeAd.getDescription());
+        actionButton.setText(nativeAd.getButtonContent());
+
+        mediaView.setNativeAd(nativeAd);
+
+        VideoNativeAd.Image icon_image = nativeAd.getIconImage();
+        iconView.setImageDrawable(icon_image.getDrawable());
+
+        VideoNativeAd.Image logo_image = nativeAd.getLogoImage();
+        logoView.setImageDrawable(logo_image.getDrawable());
+
+
+        nativeAd.registerView(nativeAdView);
+        mVideoNativeAdParent.addView(nativeAdView, 0);
     }
 
     private void showPreMovie(){
@@ -285,6 +383,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(getApplicationContext(), "原生广告展示失败"+code,Toast.LENGTH_SHORT).show();
                         break;
                 }
+            }
+
+            @Override
+            public void onClickAd(NativeAd nativeAd) {
+                Toast.makeText(getApplicationContext(), "原生广告被点击",Toast.LENGTH_SHORT).show();
             }
         });
         ad.loadAd();

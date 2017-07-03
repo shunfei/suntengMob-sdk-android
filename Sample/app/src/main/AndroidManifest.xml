@@ -42,6 +42,7 @@
         <activity android:name="com.sunteng.ads.video.core.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".sample.VideoNativeAdRecyclerViewActivity"/>
 
         <provider
             android:authorities="${applicationId}.fileProvider"

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)  2011-2016.  SUNTENG Corporation. All rights reserved File :
+  ~ Creation :  16-11-17 下午1:02
+  ~ Description : recycler_item_layout.xml
+  ~ Author : baishixian@sunteng.com
+  -->
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="10dp"
+    card_view:cardBackgroundColor="@color/cardview_light_background">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/item_icon_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bear"
+            android:scaleType="centerInside"
+            />
+        <TextView
+            android:id="@+id/item_info_text"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="差不多是一条咸鱼了"
+            />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

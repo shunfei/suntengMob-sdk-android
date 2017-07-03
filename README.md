@@ -14,6 +14,12 @@
  
 ## Change Log
 
+07/03/2017 - [v3.2.0](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.2.0)
+
+* New support VideoNativeAd (视频信息流广告)
+* Improve performance.
+* Fix Bug.
+
 05/24/2017 - [v3.1.1](https://github.com/shunfei/suntengMob-sdk-android/releases/tag/v3.1.1)
 
 * Improve WebView compatibility
