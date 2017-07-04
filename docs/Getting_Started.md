@@ -1,4 +1,4 @@
-# SuntengMob SDK V3.1.1
+# SuntengMob SDK V3.2.0
 
 
 ## 目录
