@@ -14,7 +14,8 @@
 * [十、视频贴片广告](#十、视频贴片广告)
 * [十一、广告展示失败时的一些错误码](#十一、广告展示失败时的一些错误码)
 * [十二、适配Android7.0](#十二、适配Android7.0)
-* [十三、其他](#十三、其他)
+* [十三、适配Android8.0](#十三、适配Android8.0)
+* [十四、其他](#十四、其他)
 	* [设置Debug模式](#设置Debug模式)
 	* [配置SDK的混淆规则](#配置SDK的混淆规则)
 	* [位置信息获取开关](#位置信息获取开关)
@@ -817,26 +818,26 @@ protected void onDestroy() {
 
 ### 十一、广告展示失败时的一些错误码
  
-```java
-  SDKCode.CODE_UNKNOWN_ERROR = -1;//异步请求过程中发生错误
-  SDKCode.CODE_HTTP_ERROR = 1; //处理http请求的过程中发生错误
-  SDKCode.CODE_PRELOAD_FIALED = 2; //广告资源加载失败
-  SDKCode.CODE_BAD_NETWORK = 0;//无网络或无网络权限
-  SDKCode.CODE_BLANK_RESPONSE = 201 // 竞价请求失败,返回留白    
-  SDKCode.CODE_BACK_AMOUNT = 202; //竞价请求失败,返回返量
-```    
+|广告请求错误码      | 数值  |   含义         |
+|:-----       |:-----:| :-------:         |
+|SDKCode.CODE_UNKNOWN_ERROR  | -1  |  异步请求过程中发生错误  |
+|SDKCode.CODE_HTTP_ERROR  | 1  |   处理http请求的过程中发生错误  |
+|SDKCode.CODE_PRELOAD_FIALED | 2  |  广告资源加载失败  |
+|SDKCode.CODE_BAD_NETWORK  | 0  |  无网络或无网络权限  |
+|SDKCode.CODE_BLANK_RESPONSE | 201  |  竞价请求失败,返回留白  |    
+|SDKCode.CODE_BACK_AMOUNT   | 202  |  竞价请求失败,返回返量  |
  
- 
-    
+**下面是针对视频广告相关的状态码**
+
 |播放状态返回码      | 数值  |   含义          |
 |:-----       |:-----:| :-------:         |
-|VideoAdService.PLAYDONE| 200   |	播放完视频后用户点击了返回  |
-|MVideoAdService.INSTALL_APK_DONE      | 201   |  安装了推广的app后返回  |
-|VideoAdService.PLAYDONE_SKIPVIDEO| 202  |	用户跳过了广告视频 |
-|VideoAdService.LAUNCH_APP| 203   |	用户点击广告打开了推广的app后返回  |
-|VideoAdService.OPEN_WEB      | 206   |  用户点击广告打开了推广落地页  |
-|VideoAdService.PLAYDONE_CLOSEDETAIL| 208 | 用户看完视频后在推广详情页面点击关闭视频|
-|VideoAdService.CLICK_DOWNLOAD| 209 | 用户点击下载推广app|
+| VideoAdService.PLAYDONE| 200   |	播放完视频后用户点击了返回  |
+| MVideoAdService.INSTALL_APK_DONE      | 201   |  安装了推广的app后返回  |
+| VideoAdService.PLAYDONE_SKIPVIDEO| 202  |	用户跳过了广告视频 |
+| VideoAdService.LAUNCH_APP| 203   |	用户点击广告打开了推广的app后返回  |
+| VideoAdService.OPEN_WEB      | 206   |  用户点击广告打开了推广落地页  |
+| VideoAdService.PLAYDONE_CLOSEDETAIL| 208 | 用户看完视频后在推广详情页面点击关闭视频|
+| VideoAdService.CLICK_DOWNLOAD| 209 | 用户点击下载推广app|
 | VideoAdService.ERROR_NO_VIDEO | 204   |	没有请求到广告内容  |
 | VideoAdService.ERROR_DOWNLOAD: | 400 |视频下载中遇到错误|
 | VideoAdService.ERROR_PLAYING_VIDEO      | 401   | 播放中遇到错误   |
@@ -889,10 +890,21 @@ Manifest中注册SplashActivity时候，需要加上*android:resizeableActivity=
  	<external-path name="sunteng_sdk_download_apk" path="Android/data/com.sunteng.ads.sample/files/APK/"/>
 </paths>
 ```
+<div id="十三、适配Android8.0" />
 
-<div id="十三、其他" />	
+### 十三、适配Android8.0
 
-### 十三、其他
+在 Android 8.0 中，新增了安装未知应用权限，此权限与其他运行时权限一样，会与应用绑定。系统会在应用安装其他未知应用时进行提示，确保用户授予该权限后才会进行应用安装。如果您的应用使用了 26 或更高级别的 targetSdkLevel，建议在 AndroidManifest.xml 文件添加下面的权限声明：
+
+```xml
+<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+```
+
+> 更多相关信息可参见谷歌官方说明：[在 Android O 中更安全地获取应用](http://developers.googleblog.cn/2017/08/android-o_29.html)
+
+<div id="十四、其他" />	
+
+### 十四、其他
 
 <div id="设置Debug模式" />	
 
